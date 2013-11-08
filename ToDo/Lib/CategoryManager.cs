@@ -152,9 +152,9 @@ namespace ToDo.Lib
             }
         }
 
-        public static void ToXml()
+        public static void ToXml(string path)
         {
-            XmlTextWriter xtw = new XmlTextWriter("db.xml", UnicodeEncoding.UTF8);
+            XmlTextWriter xtw = new XmlTextWriter(path, UnicodeEncoding.UTF8);
             xtw.Formatting = Formatting.Indented;
             xtw.WriteStartDocument();
             xtw.WriteStartElement("ToDoDb");

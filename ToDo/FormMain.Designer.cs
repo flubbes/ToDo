@@ -37,9 +37,9 @@
             this.tspbActionProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.tsslCurrentAction = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.addCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadTodoListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -109,13 +109,6 @@
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // addCategoryToolStripMenuItem
-            // 
-            this.addCategoryToolStripMenuItem.Name = "addCategoryToolStripMenuItem";
-            this.addCategoryToolStripMenuItem.Size = new System.Drawing.Size(92, 20);
-            this.addCategoryToolStripMenuItem.Text = "Add Category";
-            this.addCategoryToolStripMenuItem.Click += new System.EventHandler(this.addCategoryToolStripMenuItem_Click);
-            // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -129,6 +122,14 @@
             this.loadTodoListToolStripMenuItem.Name = "loadTodoListToolStripMenuItem";
             this.loadTodoListToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.loadTodoListToolStripMenuItem.Text = "Load TodoList";
+            this.loadTodoListToolStripMenuItem.Click += new System.EventHandler(this.loadTodoListToolStripMenuItem_Click);
+            // 
+            // addCategoryToolStripMenuItem
+            // 
+            this.addCategoryToolStripMenuItem.Name = "addCategoryToolStripMenuItem";
+            this.addCategoryToolStripMenuItem.Size = new System.Drawing.Size(92, 20);
+            this.addCategoryToolStripMenuItem.Text = "Add Category";
+            this.addCategoryToolStripMenuItem.Click += new System.EventHandler(this.addCategoryToolStripMenuItem_Click);
             // 
             // FormMain
             // 

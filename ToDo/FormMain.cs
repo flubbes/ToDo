@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,13 +16,17 @@ namespace ToDo
     public partial class FormMain : Form
     {
         FormTasks ft;
+        string defaultDB = "db.xml";
+        string loadedDB;
+
         public FormMain()
         {
             InitializeComponent();
             CategoryManager.Init();
             try
             {
-                CategoryManager.FromXml("db.xml");
+                CategoryManager.FromXml(defaultDB);
+                loadedDB = defaultDB;
             }
             catch (XmlException ex)
             {
@@ -84,7 +89,7 @@ namespace ToDo
 
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            CategoryManager.ToXml();
+            CategoryManager.ToXml(loadedDB);
         }
 
         private void DeleteSelection()
@@ -104,6 +109,27 @@ namespace ToDo
             {
                 DeleteSelection();
                 CategoryManager.OnListChanged(this, e);
+            }
+        }
+
+        private void loadTodoListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Xml-Files|*.xml";
+            ofd.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath);
+            ofd.Multiselect = false;
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    CategoryManager.FromXml(ofd.FileName);
+                    loadedDB = Path.GetFullPath(ofd.FileName);
+                }
+                catch (XmlException ex)
+                {
+                    MessageBox.Show("This database is corrupted!");
+                }
+                UpdateList();
             }
         }
     }
