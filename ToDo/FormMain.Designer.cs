@@ -28,19 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.lvCategories = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cmsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tspbActionProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.tsslCurrentAction = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadTodoListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recentFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showChangesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsMenu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -51,6 +56,7 @@
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
+            this.lvCategories.ContextMenuStrip = this.cmsMenu;
             this.lvCategories.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvCategories.FullRowSelect = true;
             this.lvCategories.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -76,6 +82,21 @@
             // columnHeader3
             // 
             this.columnHeader3.Text = "Progress";
+            // 
+            // cmsMenu
+            // 
+            this.cmsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem});
+            this.cmsMenu.Name = "cmsMenu";
+            this.cmsMenu.Size = new System.Drawing.Size(153, 48);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -103,7 +124,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.addCategoryToolStripMenuItem});
+            this.addCategoryToolStripMenuItem,
+            this.showChangesToolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(574, 24);
@@ -122,9 +144,15 @@
             // loadTodoListToolStripMenuItem
             // 
             this.loadTodoListToolStripMenuItem.Name = "loadTodoListToolStripMenuItem";
-            this.loadTodoListToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadTodoListToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.loadTodoListToolStripMenuItem.Text = "Load TodoList";
             this.loadTodoListToolStripMenuItem.Click += new System.EventHandler(this.loadTodoListToolStripMenuItem_Click);
+            // 
+            // recentFilesToolStripMenuItem
+            // 
+            this.recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
+            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.recentFilesToolStripMenuItem.Text = "Recent Files";
             // 
             // addCategoryToolStripMenuItem
             // 
@@ -133,11 +161,12 @@
             this.addCategoryToolStripMenuItem.Text = "Add Category";
             this.addCategoryToolStripMenuItem.Click += new System.EventHandler(this.addCategoryToolStripMenuItem_Click);
             // 
-            // recentFilesToolStripMenuItem
+            // showChangesToolStripMenuItem1
             // 
-            this.recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
-            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.recentFilesToolStripMenuItem.Text = "Recent Files";
+            this.showChangesToolStripMenuItem1.Name = "showChangesToolStripMenuItem1";
+            this.showChangesToolStripMenuItem1.Size = new System.Drawing.Size(95, 20);
+            this.showChangesToolStripMenuItem1.Text = "Show changes";
+            this.showChangesToolStripMenuItem1.Click += new System.EventHandler(this.showChangesToolStripMenuItem1_Click);
             // 
             // FormMain
             // 
@@ -152,6 +181,7 @@
             this.Name = "FormMain";
             this.Text = "ToDo";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
+            this.cmsMenu.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -175,6 +205,9 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadTodoListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip cmsMenu;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showChangesToolStripMenuItem1;
 
     }
 }

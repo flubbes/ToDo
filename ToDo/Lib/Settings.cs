@@ -28,7 +28,6 @@ namespace ToDo.Lib
             {
                 throw new Exception("Could not get setting: " + key);
             }
-
         }
 
         public void Deserialize(string path)
@@ -43,26 +42,16 @@ namespace ToDo.Lib
                     str.Close();
                 }
             }
-            else
-            {
-                throw new Exception("Error while importing settings file: This file does not exists");
-            }
+            throw new Exception("Error while importing settings file: This file does not exists");
         }
 
         public void Serialize(string path)
         {
-            if (File.Exists(path))
+            using (Stream str = new FileStream(path, FileMode.Create))
             {
-                using (Stream str = new FileStream(path, FileMode.Create))
-                {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    bf.Serialize(str, settings);
-                    str.Close();
-                }
-            }
-            else
-            {
-                throw new Exception("Error while exporting settings file: This file does not exists");
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(str, settings);
+                str.Close();
             }
         }
     }

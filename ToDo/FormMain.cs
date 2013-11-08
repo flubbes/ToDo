@@ -13,31 +13,36 @@ using ToDo.Lib;
 
 namespace ToDo
 {
+    [Serializable]
     public partial class FormMain : Form
     {
         FormTasks ft;
-        string defaultDB = "db.xml";
+        string defaultDB = "db.dat";
         string loadedDB;
+        DbManager dbm;
+        TodoList todoList;
 
         public FormMain()
         {
             InitializeComponent();
-            CategoryManager.Init();
+            dbm = new DbManager();
+            loadedDB = defaultDB;
             try
             {
-                CategoryManager.FromXml(defaultDB);
-                loadedDB = defaultDB;
+                todoList = TodoList.DeserializeFromBinary(defaultDB);
+
             }
-            catch (XmlException ex)
+            catch
             {
-                MessageBox.Show("The old database is corrupted!");
+                todoList = new TodoList();
             }
+
             UpdateList();
-            ft = new FormTasks();
-            CategoryManager.ListChanged += CategoryManager_ListChanged;
+            ft = new FormTasks(ref todoList);
+            todoList.ListChanged += todoList_ListChanged;
         }
 
-        void CategoryManager_ListChanged(object sender, EventArgs e)
+        void todoList_ListChanged(object sender, EventArgs e)
         {
             UpdateList();
         }
@@ -48,7 +53,7 @@ namespace ToDo
             f.ShowDialog();
             if (f.NewCat != null)
             {
-                CategoryManager.AddCategory(f.NewCat);
+                todoList.AddCategory(f.NewCat);
                 UpdateList();
             }
         }
@@ -56,7 +61,7 @@ namespace ToDo
         private void UpdateList()
         {
             lvCategories.Items.Clear();
-            foreach (Category c in CategoryManager.Categories)
+            foreach (Category c in todoList.Categories)
             {
                 ListViewItem i = new ListViewItem(c.Name);
                 i.SubItems.Add(c.TaskCount.ToString());
@@ -72,24 +77,18 @@ namespace ToDo
 
         private void lvCategories_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (ft.IsClosed)
-            {
-                ft = new FormTasks();
-                ft.UpdateTasks(CategoryManager.Categories[lvCategories.SelectedIndices[0]]);
-                ft.Show();
-            }
-            else
-            {
-                ft.UpdateTasks(CategoryManager.Categories[lvCategories.SelectedIndices[0]]);
-                ft.Show();
-            }
-            ft.TopMost = true;
-            ft.TopMost = false;
+            editToolStripMenuItem.PerformClick();
+        }
+
+        public void SaveDB()
+        {
+            TodoList.SerializeToXml(ref todoList, loadedDB);
+            todoList.ListChanged += todoList_ListChanged;
         }
 
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            CategoryManager.ToXml(loadedDB);
+            SaveDB();
         }
 
         private void DeleteSelection()
@@ -98,7 +97,9 @@ namespace ToDo
             {
                 if (lvCategories.SelectedIndices[0] != -1)
                 {
-                    CategoryManager.Categories.RemoveAt(lvCategories.SelectedIndices[0]);
+                    Change c = new Change(Environment.UserName, ChangeType.Delete, lvCategories.SelectedIndices[0], null);
+                    todoList.Categories.RemoveAt(lvCategories.SelectedIndices[0]);
+                    todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
                 }
             }
         }
@@ -108,7 +109,6 @@ namespace ToDo
             if (e.KeyCode == Keys.Delete)
             {
                 DeleteSelection();
-                CategoryManager.OnListChanged(this, e);
             }
         }
 
@@ -122,14 +122,40 @@ namespace ToDo
             {
                 try
                 {
-                    CategoryManager.FromXml(ofd.FileName);
+                    todoList = TodoList.DeserializeFromBinary(ofd.FileName);
                     loadedDB = Path.GetFullPath(ofd.FileName);
                 }
-                catch (XmlException ex)
+                catch (XmlException)
                 {
                     MessageBox.Show("This database is corrupted!");
                 }
                 UpdateList();
+            }
+        }
+
+        private void showChangesToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FormChanges fc = new FormChanges(todoList.Changes);
+            fc.Show();
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lvCategories.SelectedIndices.Count >= 1)
+            {
+                if (ft.IsClosed)
+                {
+                    ft = new FormTasks(ref todoList);
+                    ft.UpdateTasks(todoList.Categories[lvCategories.SelectedIndices[0]]);
+                    ft.Show();
+                }
+                else
+                {
+                    ft.UpdateTasks(todoList.Categories[lvCategories.SelectedIndices[0]]);
+                    ft.Show();
+                }
+                ft.TopMost = true;
+                ft.TopMost = false;
             }
         }
     }

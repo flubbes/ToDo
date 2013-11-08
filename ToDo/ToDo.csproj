@@ -83,6 +83,12 @@
     <Compile Include="FormBatchAdd.Designer.cs">
       <DependentUpon>FormBatchAdd.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormChanges.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChanges.Designer.cs">
+      <DependentUpon>FormChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,7 +102,11 @@
       <DependentUpon>FormTasks.cs</DependentUpon>
     </Compile>
     <Compile Include="Lib\Category.cs" />
-    <Compile Include="Lib\CategoryManager.cs" />
+    <Compile Include="Lib\Change.cs" />
+    <Compile Include="Lib\ChangeType.cs" />
+    <Compile Include="Lib\TodoListChangedEventArgs.cs" />
+    <Compile Include="Lib\TodoList.cs" />
+    <Compile Include="Lib\DbManager.cs" />
     <Compile Include="Lib\FtpManager.cs" />
     <Compile Include="Lib\Settings.cs" />
     <Compile Include="Lib\Task.cs" />
@@ -110,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormBatchAdd.resx">
       <DependentUpon>FormBatchAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormChanges.resx">
+      <DependentUpon>FormChanges.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

@@ -13,9 +13,11 @@ namespace ToDo
     public partial class FormTasks : Form
     {
         Category curCat;
-        public FormTasks()
+        TodoList todoList;
+        public FormTasks(ref TodoList todoList)
         {
             InitializeComponent();
+            this.todoList = todoList;
         }
 
         public void UpdateTasks()
@@ -57,9 +59,10 @@ namespace ToDo
         {
             if (clbTasks.SelectedIndex != -1)
             {
+                Change c = new Change(Environment.UserName, ChangeType.Delete, curCat.Tasks[clbTasks.SelectedIndex], null);
                 curCat.Tasks.RemoveAt(clbTasks.SelectedIndex);
                 UpdateTasks();
-                CategoryManager.OnListChanged(this, new EventArgs());
+                todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
             }
         }
 
@@ -77,8 +80,10 @@ namespace ToDo
 
         private void clbTasks_ItemCheck(object sender, ItemCheckEventArgs e)
         {
+            Task old = curCat.Tasks[e.Index];
             curCat.Tasks[e.Index].IsDone = e.NewValue.Equals(CheckState.Checked);
-            CategoryManager.OnListChanged(this, new EventArgs());
+            Change c = new Change(Environment.UserName, ChangeType.Edit, old, curCat.Tasks[e.Index]);
+            todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
         }
 
         private void addTaskToolStripMenuItem_Click(object sender, EventArgs e)
@@ -87,9 +92,10 @@ namespace ToDo
             f.ShowDialog();
             if (f.NewTask != null)
             {
+                Change c = new Change(Environment.UserName, ChangeType.Add, null, f.NewTask);
                 curCat.AddTask(f.NewTask);
                 UpdateTasks();
-                CategoryManager.OnListChanged(this, new EventArgs());
+                todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
             }
         }
 
@@ -101,10 +107,12 @@ namespace ToDo
             {
                 foreach (Task t in f.NewTasks)
                 {
+                    Change c = new Change(Environment.UserName, ChangeType.Add, null, t);
                     curCat.AddTask(t);
+                    todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
                 }
                 UpdateTasks();
-                CategoryManager.OnListChanged(this, new EventArgs());
+                
             }
         }
     }

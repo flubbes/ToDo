@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToDo.Lib
 {
+    [Serializable]
     public class Task
     {
         bool isDone;

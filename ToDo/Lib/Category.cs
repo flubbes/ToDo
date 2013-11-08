@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 
 namespace ToDo.Lib
 {
+    [Serializable]
     public class Category
     {
         public Category(string name)
         {
             Tasks = new List<Task>();
             this.Name = name;
+        }
+
+        public long ID
+        {
+            get;
+            private set;
         }
 
         public List<Task> Tasks
