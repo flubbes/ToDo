@@ -45,6 +45,7 @@
             this.recentFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showChangesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.importOldXMLFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsMenu.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -67,7 +68,6 @@
             this.lvCategories.TabIndex = 1;
             this.lvCategories.UseCompatibleStateImageBehavior = false;
             this.lvCategories.View = System.Windows.Forms.View.Details;
-            this.lvCategories.SelectedIndexChanged += new System.EventHandler(this.lvCategories_SelectedIndexChanged);
             this.lvCategories.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvCategories_KeyDown);
             this.lvCategories.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvCategories_MouseDoubleClick);
             // 
@@ -88,13 +88,13 @@
             this.cmsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editToolStripMenuItem});
             this.cmsMenu.Name = "cmsMenu";
-            this.cmsMenu.Size = new System.Drawing.Size(153, 48);
+            this.cmsMenu.Size = new System.Drawing.Size(96, 26);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
@@ -136,7 +136,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadTodoListToolStripMenuItem,
-            this.recentFilesToolStripMenuItem});
+            this.recentFilesToolStripMenuItem,
+            this.importOldXMLFileToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -144,14 +145,14 @@
             // loadTodoListToolStripMenuItem
             // 
             this.loadTodoListToolStripMenuItem.Name = "loadTodoListToolStripMenuItem";
-            this.loadTodoListToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.loadTodoListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadTodoListToolStripMenuItem.Text = "Load TodoList";
             this.loadTodoListToolStripMenuItem.Click += new System.EventHandler(this.loadTodoListToolStripMenuItem_Click);
             // 
             // recentFilesToolStripMenuItem
             // 
             this.recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
-            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.recentFilesToolStripMenuItem.Text = "Recent Files";
             // 
             // addCategoryToolStripMenuItem
@@ -167,6 +168,13 @@
             this.showChangesToolStripMenuItem1.Size = new System.Drawing.Size(95, 20);
             this.showChangesToolStripMenuItem1.Text = "Show changes";
             this.showChangesToolStripMenuItem1.Click += new System.EventHandler(this.showChangesToolStripMenuItem1_Click);
+            // 
+            // importOldXMLFileToolStripMenuItem
+            // 
+            this.importOldXMLFileToolStripMenuItem.Name = "importOldXMLFileToolStripMenuItem";
+            this.importOldXMLFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importOldXMLFileToolStripMenuItem.Text = "Import old XML-File";
+            this.importOldXMLFileToolStripMenuItem.Click += new System.EventHandler(this.importOldXMLFileToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -208,6 +216,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsMenu;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showChangesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem importOldXMLFileToolStripMenuItem;
 
     }
 }

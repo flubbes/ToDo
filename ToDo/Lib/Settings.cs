@@ -12,9 +12,14 @@ namespace ToDo.Lib
     {
         Dictionary<string, object> settings;
 
-        public Settings(string pathToSettings)
+        public Settings()
         {
             settings = new Dictionary<string,object>();
+        }
+
+        public bool HasKey(string key)
+        {
+            return settings.Keys.Contains(key);
         }
 
         public T GetSetting<T>(string key)
@@ -30,6 +35,15 @@ namespace ToDo.Lib
             }
         }
 
+        public void StoreSetting(string key, object val)
+        {
+            if (HasKey(key))
+            {
+                settings.Remove(key);
+            }
+            settings.Add(key, val);
+        }
+
         public void Deserialize(string path)
         {
             if (File.Exists(path))
@@ -42,7 +56,10 @@ namespace ToDo.Lib
                     str.Close();
                 }
             }
-            throw new Exception("Error while importing settings file: This file does not exists");
+            else
+            {
+                throw new Exception("Error while importing settings file: This file does not exists");
+            }
         }
 
         public void Serialize(string path)

@@ -66,7 +66,7 @@ namespace ToDo.Lib
             }
         }
 
-        public static void SerializeToXml(ref TodoList theList, string path)
+        public static void SerializeToBinary(ref TodoList theList, string path)
         {
             using (Stream str = new FileStream(path, FileMode.Create))
             {
