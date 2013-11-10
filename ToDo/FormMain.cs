@@ -20,6 +20,7 @@ namespace ToDo
         private const string settingsPath = "settings.dat";
         private List<string> recentFiles;
         private const string recentFilesKeyWord = "RecentFiles";
+        FormChanges formChanges;
         #endregion
 
         /// <summary>
@@ -143,9 +144,16 @@ namespace ToDo
         private void showChangesToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             //create a new changes form
-            FormChanges fc = new FormChanges(todoList.Changes);
+            if (formChanges == null || formChanges.IsDisposed)
+            {
+                formChanges = new FormChanges(todoList);
+            }
+            
             //show the form
-            fc.Show();
+            formChanges.Show();
+
+            formChanges.TopMost = true;
+            formChanges.TopMost = false;
         }
 
         /// <summary>
@@ -356,7 +364,7 @@ namespace ToDo
                 //if the selection does not contain an invalid value
                 if (lvCategories.SelectedIndices[0] != -1)
                 {
-                    Change c = new Change(Environment.UserName, ChangeType.Delete, lvCategories.SelectedIndices[0], null);
+                    Change c = new Change(Environment.UserName, ChangeType.Delete, todoList.Categories[lvCategories.SelectedIndices[0]].Clone(), null);
                     todoList.Categories.RemoveAt(lvCategories.SelectedIndices[0]);
                     todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
                 }

@@ -27,8 +27,8 @@ namespace ToDo.Lib
         {
             if (ListChanged != null)
             {
-                ListChanged(sender, e);
                 Changes.Add(e.Change);
+                ListChanged(sender, e);
                 LocalVersion++;
             }
         }
@@ -81,7 +81,7 @@ namespace ToDo.Lib
 
         public void AddCategory(Category cat)
         {
-            Change c = new Change(Environment.UserName, ChangeType.Add, null, cat);
+            Change c = new Change(Environment.UserName, ChangeType.Add, null, cat.Clone());
             Categories.Add(cat);
             OnListChanged(new object(), new TodoListChangedEventArgs(c));
         }

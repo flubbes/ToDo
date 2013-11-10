@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ToDo.Lib
 {
     [Serializable]
-    public class Category
+    public class Category : ICloneable
     {
         public Category(string name)
         {
@@ -75,6 +75,14 @@ namespace ToDo.Lib
                     return 0.0;
                 }
             }
+        }
+
+        public object Clone()
+        {
+            Category c = new Category(this.Name);
+            c.Tasks = this.Tasks;
+            c.ID = this.ID;
+            return c;
         }
     }
 }

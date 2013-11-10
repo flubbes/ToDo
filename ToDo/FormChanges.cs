@@ -12,12 +12,18 @@ namespace ToDo
 {
     public partial class FormChanges : Form
     {
-        List<Change> changes;
-        public FormChanges(List<Change> changes)
+        TodoList todoList;
+        public FormChanges(TodoList tl)
         {
             InitializeComponent();
-            this.changes = changes;
-            UdpateListView();
+            this.todoList = tl;
+            UpdateListView();
+            tl.ListChanged += tl_ListChanged;
+        }
+
+        void tl_ListChanged(object sender, TodoListChangedEventArgs e)
+        {
+            UpdateListView();
         }
 
         public string ColumnStringFromTask(Task t)
@@ -30,10 +36,12 @@ namespace ToDo
             return string.Format("Tasks: {0} Text: {1}", c.TaskCount, c.Name);
         }
 
-        public void UdpateListView()
+        public void UpdateListView()
         {
             lvChanges.Items.Clear();
-            foreach(Change c in changes)
+            List<Change> tempChanges = todoList.Changes;
+            tempChanges.Reverse();
+            foreach(Change c in todoList.Changes)
             {
                 ListViewItem item = new ListViewItem(c.Type.ToString());
                 item.SubItems.Add(c.Author);
@@ -69,6 +77,14 @@ namespace ToDo
                     item.SubItems.Add("");
                 }
                 lvChanges.Items.Add(item);
+            }
+        }
+
+        private void lvChanges_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.F5)
+            {
+                UpdateListView();
             }
         }
     }

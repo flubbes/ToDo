@@ -59,7 +59,7 @@ namespace ToDo
         {
             if (clbTasks.SelectedIndex != -1)
             {
-                Change c = new Change(Environment.UserName, ChangeType.Delete, curCat.Tasks[clbTasks.SelectedIndex], null);
+                Change c = new Change(Environment.UserName, ChangeType.Delete, curCat.Tasks[clbTasks.SelectedIndex].Clone(), null);
                 curCat.Tasks.RemoveAt(clbTasks.SelectedIndex);
                 UpdateTasks();
                 todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
@@ -80,9 +80,9 @@ namespace ToDo
 
         private void clbTasks_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Task old = curCat.Tasks[e.Index];
+            Task old = (Task)curCat.Tasks[e.Index].Clone();
             curCat.Tasks[e.Index].IsDone = e.NewValue.Equals(CheckState.Checked);
-            Change c = new Change(Environment.UserName, ChangeType.Edit, old, curCat.Tasks[e.Index]);
+            Change c = new Change(Environment.UserName, ChangeType.Edit, old, curCat.Tasks[e.Index].Clone());
             todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
         }
 
@@ -92,7 +92,7 @@ namespace ToDo
             f.ShowDialog();
             if (f.NewTask != null)
             {
-                Change c = new Change(Environment.UserName, ChangeType.Add, null, f.NewTask);
+                Change c = new Change(Environment.UserName, ChangeType.Add, null, f.NewTask.Clone());
                 curCat.AddTask(f.NewTask);
                 UpdateTasks();
                 todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
@@ -107,7 +107,7 @@ namespace ToDo
             {
                 foreach (Task t in f.NewTasks)
                 {
-                    Change c = new Change(Environment.UserName, ChangeType.Add, null, t);
+                    Change c = new Change(Environment.UserName, ChangeType.Add, null, t.Clone());
                     curCat.AddTask(t);
                     todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
                 }
