@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 
 namespace ToDo.Lib
 {
-    public class Category
+    [Serializable]
+    public class Category : ICloneable
     {
         public Category(string name)
         {
             Tasks = new List<Task>();
             this.Name = name;
+        }
+
+        public long ID
+        {
+            get;
+            private set;
         }
 
         public List<Task> Tasks
@@ -68,6 +75,14 @@ namespace ToDo.Lib
                     return 0.0;
                 }
             }
+        }
+
+        public object Clone()
+        {
+            Category c = new Category(this.Name);
+            c.Tasks = this.Tasks;
+            c.ID = this.ID;
+            return c;
         }
     }
 }

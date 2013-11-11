@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ToDo.Lib
 {
-    public class Task
+    [Serializable]
+    public class Task : ICloneable
     {
-        bool isDone;
+        private bool isDone;
         public string Text
         {
             get;
@@ -39,6 +40,15 @@ namespace ToDo.Lib
         {
             get;
             set;
+        }
+
+        public object Clone()
+        {
+            Task t = new Task();
+            t.DoneAt = this.DoneAt;
+            t.IsDone = this.isDone;
+            t.Text = this.Text;
+            return t;
         }
     }
 }

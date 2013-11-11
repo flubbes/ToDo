@@ -2,68 +2,103 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace ToDo.Lib
 {
-    public class CategoryManager
+    [Serializable]
+    public class TodoList
     {
-        static Thread thrWorker;
-        public delegate void ListChangedEventHandler(object sender, EventArgs e);
-        public static event ListChangedEventHandler ListChanged;
+        public delegate void ListChangedEventHandler(object sender, TodoListChangedEventArgs e);
+        public event ListChangedEventHandler ListChanged;
 
-        public static void Init()
+        public TodoList()
         {
             Categories = new List<Category>();
-            thrWorker = new Thread(WorkerMethod);
-            thrWorker.IsBackground = true;
+            Changes = new List<Change>();
         }
 
-        private static void WorkerMethod()
-        {
-            while (true)
-            {
-                Thread.Sleep(1);
-            }
-        }
-
-        public static void OnListChanged(object sender, EventArgs e)
+        public void OnListChanged(object sender, TodoListChangedEventArgs e)
         {
             if (ListChanged != null)
             {
+                Changes.Add(e.Change);
                 ListChanged(sender, e);
                 LocalVersion++;
             }
         }
 
-        public static List<Category> Categories
+        public List<Category> Categories
         {
             get;
             set;
         }
 
-        public static void AddCategory(Category cat)
+        public List<Change> Changes
         {
+            get;
+            set;
+        }
+
+        public static TodoList DeserializeFromBinary(string path)
+        {
+            if (File.Exists(path))
+            {
+                using (Stream str = new FileStream(path, FileMode.Open))
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    var theDictionary = bf.Deserialize(str);
+                    TodoList tl = (TodoList)theDictionary;
+                    str.Close();
+                    return tl;
+                }
+
+
+            }
+            else
+            {
+                throw new FileNotFoundException("This todo list does not exist");
+            }
+        }
+
+        public static void SerializeToBinary(ref TodoList theList, string path)
+        {
+            using (Stream str = new FileStream(path, FileMode.Create))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+
+                //we have to reset the event handler, because the mainform is linked in it. a form is not serializeable
+                theList.ListChanged = null;
+                bf.Serialize(str, theList);
+                str.Close();
+            }
+        }
+
+        public void AddCategory(Category cat)
+        {
+            Change c = new Change(Environment.UserName, ChangeType.Add, null, cat.Clone());
             Categories.Add(cat);
-            OnListChanged(new object(), new EventArgs());
+            OnListChanged(new object(), new TodoListChangedEventArgs(c));
         }
 
-        public static long LocalVersion
+        public long LocalVersion
         {
             get;
             private set;
         }
 
-        public static long OnlineVersion
+        public long OnlineVersion
         {
             get;
             private set;
         }
 
-        public static void UpdateOnlineVersion(string url)
+        public void UpdateOnlineVersion(string url)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(url);
@@ -78,7 +113,7 @@ namespace ToDo.Lib
             }
         }
 
-        public static void FromXml(string url)
+        public void FromXml(string url)
         {
             if (!File.Exists(url))
             {
@@ -152,7 +187,7 @@ namespace ToDo.Lib
             }
         }
 
-        public static void ToXml(string path)
+        public void ToXml(string path)
         {
             XmlTextWriter xtw = new XmlTextWriter(path, UnicodeEncoding.UTF8);
             xtw.Formatting = Formatting.Indented;
