@@ -49,7 +49,15 @@ namespace ToDo
         /// <param name="e">The EventArgs with the event data</param>
         void todoList_ListChanged(object sender, EventArgs e)
         {
-            UpdateList();
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(UpdateList));
+            }
+            else
+            {
+                UpdateList();
+            }
+            
         }
 
         /// <summary>
@@ -366,7 +374,7 @@ namespace ToDo
                 {
                     Change c = new Change(Environment.UserName, ChangeType.Delete, todoList.Categories[lvCategories.SelectedIndices[0]].Clone(), null);
                     todoList.Categories.RemoveAt(lvCategories.SelectedIndices[0]);
-                    todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
+                    todoList.AddChange(c);
                 }
             }
         }

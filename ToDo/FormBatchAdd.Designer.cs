@@ -122,6 +122,11 @@
             // nupEnd
             // 
             this.nupEnd.Location = new System.Drawing.Point(109, 106);
+            this.nupEnd.Maximum = new decimal(new int[] {
+            500000,
+            0,
+            0,
+            0});
             this.nupEnd.Name = "nupEnd";
             this.nupEnd.Size = new System.Drawing.Size(47, 20);
             this.nupEnd.TabIndex = 8;

@@ -31,14 +31,26 @@ namespace ToDo
             {
                 return;
             }
-            for (decimal i = nupStart.Value; i <= nupEnd.Value; i++)
+            FormAsyncProgressBar fap = new FormAsyncProgressBar(new Action<BackgroundWorker>(AddTheTasks), "Generating Tasks");
+            fap.ShowDialog();
+            this.Close();
+        }
+
+        private void AddTheTasks(BackgroundWorker worker)
+        {
+            int w = (int)nupStart.Value;
+            int g = (int)nupEnd.Value;
+            int p = 0;
+            for (int i = (int)nupStart.Value; i <= (int)nupEnd.Value; i++)
             {
                 Task t = new Task();
                 t.Text = tbString.Text;
                 t.Text = t.Text.Replace("{0}", i.ToString());
                 NewTasks.Add(t);
+                w = i;
+                p = w * 100 / g;
+                worker.ReportProgress(p);
             }
-            this.Close();
         }
     }
 }

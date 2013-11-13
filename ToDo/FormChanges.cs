@@ -21,9 +21,16 @@ namespace ToDo
             tl.ListChanged += tl_ListChanged;
         }
 
-        void tl_ListChanged(object sender, TodoListChangedEventArgs e)
+        void tl_ListChanged(object sender, EventArgs e)
         {
-            UpdateListView();
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(UpdateListView));
+            }
+            else
+            {
+                UpdateListView();
+            }
         }
 
         public string ColumnStringFromTask(Task t)
@@ -39,9 +46,9 @@ namespace ToDo
         public void UpdateListView()
         {
             lvChanges.Items.Clear();
-            List<Change> tempChanges = todoList.Changes;
+            List<Change> tempChanges = todoList.Changes.GetRange(todoList.Changes.Count - 101, 100);
             tempChanges.Reverse();
-            foreach(Change c in todoList.Changes)
+            foreach (Change c in tempChanges)
             {
                 ListViewItem item = new ListViewItem(c.Type.ToString());
                 item.SubItems.Add(c.Author);
