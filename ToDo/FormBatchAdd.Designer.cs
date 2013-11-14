@@ -173,6 +173,7 @@
             this.Controls.Add(this.btnAdd);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormBatchAdd";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Batch Adding Tasks";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

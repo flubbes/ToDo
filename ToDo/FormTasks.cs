@@ -28,21 +28,41 @@ namespace ToDo
             {
                 return;
             }
-            clbTasks.Items.Clear();
-            foreach (Task t in curCat.Tasks)
-            {
-                clbTasks.Items.Add(t.Text, t.IsDone);
-            }
+            UpdateTasks(curCat);
         }
 
         public void UpdateTasks(Category c)
         {
             curCat = c;
-            this.Text = "Tasks : " + c.Name;
-            clbTasks.Items.Clear();
+            FormAsyncProgressBar fap = new FormAsyncProgressBar(new Action<BackgroundWorker>(RefreshListView), "Refreshing form");
+            fap.ShowDialog();
+        }
+
+        private void RefreshListView(BackgroundWorker worker)
+        {
+            this.Text = "Tasks : " + curCat.Name;
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(clbTasks.Items.Clear));
+            }
+            else
+            {
+                clbTasks.Items.Clear();
+            }
+            int counter = 0;
+            int g = curCat.Tasks.Count;
             foreach (Task t in curCat.Tasks)
             {
-                clbTasks.Items.Add(t.Text, t.IsDone);
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new MethodInvoker(() => clbTasks.Items.Add(t.Text, t.IsDone)));
+                }
+                else
+                {
+                    clbTasks.Items.Add(t.Text, t.IsDone);
+                }
+                counter++;
+                worker.ReportProgress(counter * 100 / g);
             }
         }
 
