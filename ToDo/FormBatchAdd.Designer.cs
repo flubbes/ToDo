@@ -50,7 +50,7 @@
             this.btnAdd.Location = new System.Drawing.Point(338, 118);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 0;
+            this.btnAdd.TabIndex = 3;
             this.btnAdd.Text = "GO!";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
@@ -60,7 +60,7 @@
             this.tbString.Location = new System.Drawing.Point(12, 29);
             this.tbString.Name = "tbString";
             this.tbString.Size = new System.Drawing.Size(174, 20);
-            this.tbString.TabIndex = 1;
+            this.tbString.TabIndex = 0;
             this.tbString.Text = "Task {0}";
             // 
             // label1
@@ -117,7 +117,7 @@
             this.nupStart.Location = new System.Drawing.Point(12, 106);
             this.nupStart.Name = "nupStart";
             this.nupStart.Size = new System.Drawing.Size(47, 20);
-            this.nupStart.TabIndex = 7;
+            this.nupStart.TabIndex = 1;
             // 
             // nupEnd
             // 
@@ -129,7 +129,7 @@
             0});
             this.nupEnd.Name = "nupEnd";
             this.nupEnd.Size = new System.Drawing.Size(47, 20);
-            this.nupEnd.TabIndex = 8;
+            this.nupEnd.TabIndex = 2;
             // 
             // label5
             // 
