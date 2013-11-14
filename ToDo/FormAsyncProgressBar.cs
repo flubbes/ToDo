@@ -36,6 +36,8 @@ namespace ToDo
 
         void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            this.Refresh();
+            Application.DoEvents();
             this.Close();
         }
 
