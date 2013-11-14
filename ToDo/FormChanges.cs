@@ -46,7 +46,15 @@ namespace ToDo
         public void UpdateListView()
         {
             lvChanges.Items.Clear();
-            List<Change> tempChanges = todoList.Changes.GetRange(todoList.Changes.Count - 101, 100);
+            List<Change> tempChanges;
+            if (todoList.Changes.Count <= 100)
+            {
+                tempChanges = todoList.Changes;
+            }
+            else
+            {
+                tempChanges = todoList.Changes.GetRange(todoList.Changes.Count - 101, 100);
+            }
             tempChanges.Reverse();
             foreach (Change c in tempChanges)
             {
