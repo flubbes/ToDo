@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
-
 using ToDo.Lib;
 
 namespace ToDo
@@ -20,7 +20,7 @@ namespace ToDo
         private const string settingsPath = "settings.dat";
         private List<string> recentFiles;
         private const string recentFilesKeyWord = "RecentFiles";
-        FormChanges formChanges;
+        private FormChanges formChanges;
         #endregion
 
         /// <summary>
@@ -29,7 +29,11 @@ namespace ToDo
         public FormMain()
         {
             InitializeComponent();
+            ApplicationManager.Initialize();
+        }
 
+        public void InitializeTodo()
+        {
             dbm = new DbManager();
             LoadSettings();
             LoadDatabase(defaultDB);
@@ -49,7 +53,15 @@ namespace ToDo
         /// <param name="e">The EventArgs with the event data</param>
         void todoList_ListChanged(object sender, EventArgs e)
         {
-            UpdateList();
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(UpdateList));
+            }
+            else
+            {
+                UpdateList();
+            }
+            
         }
 
         /// <summary>
@@ -231,6 +243,10 @@ namespace ToDo
         /// <param name="path">The path to the recent used file</param>
         private void AddRecentFile(string path)
         {
+            if(recentFiles == null)
+            {
+                recentFiles = new List<string>();
+            }
             recentFiles.Add(path);
             if(recentFiles.Count > 5)
             {
@@ -244,6 +260,10 @@ namespace ToDo
         /// </summary>
         private void UpdateRecentFilesControl()
         {
+            if(recentFiles == null)
+            {
+                return;
+            }
             recentFilesToolStripMenuItem.DropDownItems.Clear();
             foreach(string path in recentFiles)
             {
@@ -327,10 +347,18 @@ namespace ToDo
         /// <param name="categoryPercentage">The percentage of this category</param>
         private void AddItemToListView(string categoryName, string taskCount, string categoryPercentage)
         {
+            
             ListViewItem i = new ListViewItem(categoryName);
             i.SubItems.Add(taskCount);
             i.SubItems.Add(categoryPercentage);
-            lvCategories.Items.Add(i);
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(() => lvCategories.Items.Add(i)));
+            }
+            else
+            {
+                lvCategories.Items.Add(i);
+            }
         }
 
         /// <summary>
@@ -338,11 +366,13 @@ namespace ToDo
         /// </summary>
         public void SaveDB()
         {
-            TodoList.SerializeToBinary(ref todoList, loadedDB);
+            FormAsyncProgressBar fap = new FormAsyncProgressBar(new Action<BackgroundWorker>(SaveDbAsync), "Saving database", ProgressBarStyle.Marquee);
+            fap.ShowDialog();
+        }
 
-            //hooks the event again, because of the serialization the event got to be cleared. Otherwhise the main form is serialized too, because it is hooked into the event
-            //and a form can not be serialized
-            todoList.ListChanged += todoList_ListChanged;
+        private void SaveDbAsync(BackgroundWorker worker)
+        {
+            TodoList.SerializeToBinary(ref todoList, loadedDB);
         }
 
         /// <summary>
@@ -366,8 +396,36 @@ namespace ToDo
                 {
                     Change c = new Change(Environment.UserName, ChangeType.Delete, todoList.Categories[lvCategories.SelectedIndices[0]].Clone(), null);
                     todoList.Categories.RemoveAt(lvCategories.SelectedIndices[0]);
-                    todoList.OnListChanged(this, new TodoListChangedEventArgs(c));
+                    todoList.AddChange(c);
                 }
+            }
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            FormSplashScreen fss = new FormSplashScreen(this);
+            fss.ShowDialog();
+        }
+
+        private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ApplicationManager.Updater.HasUpdate())
+                {
+                    if (MessageBox.Show("There is a new version available! Would you like to update now?", "New Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        ApplicationManager.Updater.DownloadUpdate();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("There is no update");
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

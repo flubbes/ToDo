@@ -14,7 +14,7 @@ namespace ToDo.Lib
     [Serializable]
     public class TodoList
     {
-        public delegate void ListChangedEventHandler(object sender, TodoListChangedEventArgs e);
+        public delegate void ListChangedEventHandler(object sender, EventArgs e);
         public event ListChangedEventHandler ListChanged;
 
         public TodoList()
@@ -23,11 +23,28 @@ namespace ToDo.Lib
             Changes = new List<Change>();
         }
 
-        public void OnListChanged(object sender, TodoListChangedEventArgs e)
+        public void AddChangeWithoutEventTriggering(Change c)
+        {
+            Changes.Add(c);
+            LocalVersion++;
+        }
+
+        public void AddChange(Change c)
+        {
+            Changes.Add(c);
+            TriggerChangeEvent();
+            LocalVersion++;
+        }
+
+        public void TriggerChangeEvent()
+        {
+            OnListChanged(new object(), new EventArgs());
+        }
+
+        private void OnListChanged(object sender, EventArgs e)
         {
             if (ListChanged != null)
             {
-                Changes.Add(e.Change);
                 ListChanged(sender, e);
                 LocalVersion++;
             }
@@ -72,9 +89,15 @@ namespace ToDo.Lib
             {
                 BinaryFormatter bf = new BinaryFormatter();
 
-                //we have to reset the event handler, because the mainform is linked in it. a form is not serializeable
+                //we have to tempsave and reset the event handler, because the mainform is linked in it. a form is not serializeable
+                ListChangedEventHandler oldHandler = theList.ListChanged;
                 theList.ListChanged = null;
+
                 bf.Serialize(str, theList);
+
+                //setting the event handler to it's old state
+                theList.ListChanged = oldHandler;
+
                 str.Close();
             }
         }
@@ -83,7 +106,7 @@ namespace ToDo.Lib
         {
             Change c = new Change(Environment.UserName, ChangeType.Add, null, cat.Clone());
             Categories.Add(cat);
-            OnListChanged(new object(), new TodoListChangedEventArgs(c));
+            OnListChanged(new object(), new EventArgs());
         }
 
         public long LocalVersion

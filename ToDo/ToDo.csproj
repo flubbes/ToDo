@@ -77,6 +77,12 @@
     <Compile Include="FormAddTask.Designer.cs">
       <DependentUpon>FormAddTask.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAsyncProgressBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAsyncProgressBar.Designer.cs">
+      <DependentUpon>FormAsyncProgressBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormBatchAdd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,12 +101,19 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSplashScreen.Designer.cs">
+      <DependentUpon>FormSplashScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormTasks.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormTasks.Designer.cs">
       <DependentUpon>FormTasks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Lib\ApplicationManager.cs" />
     <Compile Include="Lib\Category.cs" />
     <Compile Include="Lib\Change.cs" />
     <Compile Include="Lib\ChangeType.cs" />
@@ -110,6 +123,7 @@
     <Compile Include="Lib\FtpManager.cs" />
     <Compile Include="Lib\Settings.cs" />
     <Compile Include="Lib\Task.cs" />
+    <Compile Include="Lib\Updater.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormAddCategory.resx">
@@ -117,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAddTask.resx">
       <DependentUpon>FormAddTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAsyncProgressBar.resx">
+      <DependentUpon>FormAsyncProgressBar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBatchAdd.resx">
       <DependentUpon>FormBatchAdd.cs</DependentUpon>
@@ -126,6 +143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSplashScreen.resx">
+      <DependentUpon>FormSplashScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTasks.resx">
       <DependentUpon>FormTasks.cs</DependentUpon>
@@ -154,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ToDoLogo.ico" />
+    <EmbeddedResource Include="ToDoUpdater.exe" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

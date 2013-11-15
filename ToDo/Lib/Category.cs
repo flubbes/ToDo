@@ -66,6 +66,11 @@ namespace ToDo.Lib
         {
             get
             {
+                //if there are no tasks then this category is complete
+                if(TaskCount <= 0)
+                {
+                    return 100;
+                }
                 try
                 {
                     return TasksDone * 100 / TaskCount;
