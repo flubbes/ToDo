@@ -20,7 +20,7 @@ namespace ToDo
         private const string settingsPath = "settings.dat";
         private List<string> recentFiles;
         private const string recentFilesKeyWord = "RecentFiles";
-        FormChanges formChanges;
+        private FormChanges formChanges;
         #endregion
 
         /// <summary>
@@ -29,6 +29,7 @@ namespace ToDo
         public FormMain()
         {
             InitializeComponent();
+            ApplicationManager.Initialize();
         }
 
         public void InitializeTodo()
@@ -404,6 +405,28 @@ namespace ToDo
         {
             FormSplashScreen fss = new FormSplashScreen(this);
             fss.ShowDialog();
+        }
+
+        private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ApplicationManager.Updater.HasUpdate())
+                {
+                    if (MessageBox.Show("There is a new version available! Would you like to update now?", "New Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        ApplicationManager.Updater.DownloadUpdate();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("There is no update");
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

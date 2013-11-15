@@ -15,8 +15,14 @@ namespace ToDo.Lib
             this.Before = before;
             this.Author = author;
             this.After = after;
+            this.Time = DateTime.Now;
         }
 
+        public DateTime Time
+        {
+            get;
+            private set;
+        }
 
         public string Author
         {
