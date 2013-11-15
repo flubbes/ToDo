@@ -19,6 +19,18 @@ namespace ToDo
         public FormAsyncProgressBar(Action<BackgroundWorker> method, string taskName)
         {
             InitializeComponent();
+            InitForm(method, taskName, ProgressBarStyle.Blocks);
+        }
+
+        public FormAsyncProgressBar(Action<BackgroundWorker> method, string taskName, ProgressBarStyle style)
+        {
+            InitializeComponent();
+            InitForm(method, taskName, style);
+        }
+
+        private void InitForm(Action<BackgroundWorker> method, string taskName, ProgressBarStyle style)
+        {
+            progressBar.Style = style;
             this.Text = taskName;
             toRun = method;
             backgroundWorker = new BackgroundWorker();
@@ -26,7 +38,11 @@ namespace ToDo
             backgroundWorker.ProgressChanged += backgroundWorker_ProgressChanged;
             backgroundWorker.WorkerReportsProgress = true;
             backgroundWorker.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
-            
+            if(style != ProgressBarStyle.Blocks)
+            {
+                lblProgress.Visible = false;
+                lblProgressDesc.Visible = false;
+            }
         }
 
         public void StartTheTask()

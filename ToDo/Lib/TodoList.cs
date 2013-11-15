@@ -89,9 +89,15 @@ namespace ToDo.Lib
             {
                 BinaryFormatter bf = new BinaryFormatter();
 
-                //we have to reset the event handler, because the mainform is linked in it. a form is not serializeable
+                //we have to tempsave and reset the event handler, because the mainform is linked in it. a form is not serializeable
+                ListChangedEventHandler oldHandler = theList.ListChanged;
                 theList.ListChanged = null;
+
                 bf.Serialize(str, theList);
+
+                //setting the event handler to it's old state
+                theList.ListChanged = oldHandler;
+
                 str.Close();
             }
         }
