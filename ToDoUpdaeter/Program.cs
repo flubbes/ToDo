@@ -13,7 +13,7 @@ namespace ToDoUpdaeter
     {
         static void Main()
         {
-            DateTime lastMessage = DateTime.Now.Subtract(TimeSpan.FromDays(1));
+            DateTime lastMessage = DateTime.Now;
             while(Process.GetProcessesByName("ToDo").Count() >= 1)
             {
                 if((DateTime.Now - lastMessage).TotalSeconds >= 20)
@@ -29,7 +29,7 @@ namespace ToDoUpdaeter
                 {
                     File.Delete("ToDo.exe");
                 }
-                File.Copy("ToDo_new.exe", "Todo.exe");
+                File.Copy("ToDo_new.exe", "ToDo.exe");
                 File.Delete("ToDo_new.exe");
             }
             if (File.Exists("ToDo.exe"))
