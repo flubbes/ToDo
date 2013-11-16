@@ -170,8 +170,11 @@ namespace ToDo
                 FormEditTask fet = new FormEditTask(toEdit.Text);
                 if(fet.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
+                    Task old = (Task)toEdit.Clone();
                     toEdit.Text = fet.ResultText;
                     UpdateTasks();
+                    Change c = new Change(Environment.UserName, ChangeType.Edit, old, toEdit);
+                    todoList.AddChange(c);
                 }
             }
         }

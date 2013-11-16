@@ -428,7 +428,7 @@ namespace ToDo
             fss.ShowDialog();
         }
 
-        private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -444,10 +444,15 @@ namespace ToDo
                     MessageBox.Show("There is no update");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FormAbout().ShowDialog();
         }
     }
 }
