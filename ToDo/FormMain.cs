@@ -12,12 +12,12 @@ namespace ToDo
     {
         #region private fields and constants
         private FormTasks taskForm;
-        private string defaultDB = "db.todo";
+        private string defaultDB;
         private string loadedDB;
         private DbManager dbm;
         private TodoList todoList;
         private Settings settings;
-        private const string settingsPath = "settings.dat";
+        private string settingsPath;
         private List<string> recentFiles;
         private const string recentFilesKeyWord = "RecentFiles";
         private FormChanges formChanges;
@@ -34,6 +34,8 @@ namespace ToDo
 
         public void InitializeTodo()
         {
+            settingsPath =  ApplicationManager.GetAppPath() + "settings.dat";
+            defaultDB = ApplicationManager.GetAppPath() +  "db.todo";
             dbm = new DbManager();
             LoadSettings();
             LoadDatabase(defaultDB);
@@ -337,6 +339,7 @@ namespace ToDo
             {
                 AddItemToListView(c.Name, c.TaskCount.ToString(), c.CategoryPercentage.ToString());
             }
+            
         }
 
         /// <summary>

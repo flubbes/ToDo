@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
 
 namespace ToDo.Lib
 {
@@ -17,6 +19,16 @@ namespace ToDo.Lib
         {
             get;
             private set;
+        }
+
+        public static string GetAppPath()
+        {
+            string result = Path.GetDirectoryName(Application.ExecutablePath);
+            if(!result.EndsWith("/"))
+            {
+                result += "\\";
+            }
+            return result;
         }
     }
 }

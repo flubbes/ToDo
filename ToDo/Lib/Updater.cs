@@ -13,20 +13,25 @@ namespace ToDo.Lib
     public class Updater
     {
         DateTime lastCheck;
+        string updaterPath, newTodoPath, toDoPath;
 
         public Updater()
         {
+            updaterPath = ApplicationManager.GetAppPath() + "ToDoUpdater.exe";
+            newTodoPath = ApplicationManager.GetAppPath() + "ToDo_new.exe";
+            toDoPath = ApplicationManager.GetAppPath() + "ToDo.exe";
             TryDeleteUpdater();
             lastCheck = DateTime.Now.Subtract(TimeSpan.FromDays(1));
+           
         }
 
         private void TryDeleteUpdater()
         {
             try
             {
-                if (File.Exists("TodoUpdater.exe"))
+                if (File.Exists(updaterPath))
                 {
-                    File.Delete("TodoUpdater.exe");
+                    File.Delete(updaterPath);
                 }
             }
             catch { }
@@ -65,11 +70,11 @@ namespace ToDo.Lib
         {
             WebClient cl = new WebClient();
             cl.DownloadFileCompleted += cl_DownloadFileCompleted;
-            if(File.Exists("ToDo_new.exe"))
+            if(File.Exists(newTodoPath))
             {
-                File.Delete("Todo_new.exe");
+                File.Delete(newTodoPath);
             }
-            cl.DownloadFileAsync(new Uri("http://todo-update.kabesoft.de/ToDo.exe"), "ToDo_new.exe");
+            cl.DownloadFileAsync(new Uri("http://todo-update.kabesoft.de/ToDo.exe"), newTodoPath);
         }
 
         void cl_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
@@ -77,10 +82,10 @@ namespace ToDo.Lib
             Stream stream = GetType().Assembly.GetManifestResourceStream("ToDo.ToDoUpdater.exe");
             byte[] bytes = new byte[(int)stream.Length];
             stream.Read(bytes, 0, bytes.Length);
-            File.WriteAllBytes("ToDoUpdater.exe", bytes);
+            File.WriteAllBytes(updaterPath, bytes);
 
 
-            Process.Start("ToDoUpdater.exe");
+            Process.Start(updaterPath);
             Application.Exit();
         }
 
