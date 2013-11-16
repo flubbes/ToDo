@@ -339,7 +339,7 @@ namespace ToDo
             {
                 AddItemToListView(c.Name, c.TaskCount.ToString(), c.CategoryPercentage.ToString());
             }
-            
+            lvCategories.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         /// <summary>
