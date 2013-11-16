@@ -262,11 +262,7 @@ namespace ToDo
         /// </summary>
         private void UpdateRecentFilesControl()
         {
-            if(recentFiles == null)
-            {
-                return;
-            }
-            if (recentFiles.Count <= 0)
+            if(recentFiles == null || recentFiles.Count <= 0)
             {
                 recentFilesToolStripMenuItem.Visible = false;
                 return;
