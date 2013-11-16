@@ -117,6 +117,12 @@
     <Compile Include="Lib\Category.cs" />
     <Compile Include="Lib\Change.cs" />
     <Compile Include="Lib\ChangeType.cs" />
+    <Compile Include="Lib\FormEditTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lib\FormEditTask.Designer.cs">
+      <DependentUpon>FormEditTask.cs</DependentUpon>
+    </Compile>
     <Compile Include="Lib\TodoListChangedEventArgs.cs" />
     <Compile Include="Lib\TodoList.cs" />
     <Compile Include="Lib\DbManager.cs" />
