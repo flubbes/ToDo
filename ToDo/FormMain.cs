@@ -266,6 +266,12 @@ namespace ToDo
             {
                 return;
             }
+            if (recentFiles.Count <= 0)
+            {
+                recentFilesToolStripMenuItem.Visible = false;
+                return;
+            }
+            recentFilesToolStripMenuItem.Visible = true;
             recentFilesToolStripMenuItem.DropDownItems.Clear();
             foreach(string path in recentFiles)
             {
@@ -339,7 +345,19 @@ namespace ToDo
             {
                 AddItemToListView(c.Name, c.TaskCount.ToString(), c.CategoryPercentage.ToString());
             }
-            lvCategories.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            ResizeColumns();
+        }
+
+        private void ResizeColumns()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(() => lvCategories.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)));
+            }
+            else
+            {
+                lvCategories.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            }
         }
 
         /// <summary>
