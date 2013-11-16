@@ -353,10 +353,14 @@ namespace ToDo
             if (this.InvokeRequired)
             {
                 this.Invoke(new MethodInvoker(() => lvCategories.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)));
+                this.Invoke(new MethodInvoker(() => lvCategories.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.HeaderSize)));
+                this.Invoke(new MethodInvoker(() => lvCategories.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.HeaderSize)));
             }
             else
             {
                 lvCategories.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                lvCategories.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.HeaderSize);
+                lvCategories.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.HeaderSize);
             }
         }
 
