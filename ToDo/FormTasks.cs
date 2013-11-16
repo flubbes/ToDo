@@ -77,6 +77,15 @@ namespace ToDo
             IsClosed = true;
         }
 
+        private Task GetSelectedTask()
+        {
+            if (clbTasks.SelectedIndex != -1)
+            {
+                return curCat.Tasks[clbTasks.SelectedIndex];
+            }
+            return null;
+        }
+
         private void DeleteSelection()
         {
             if (clbTasks.SelectedIndex != -1)
@@ -150,6 +159,20 @@ namespace ToDo
                 FormAsyncProgressBar fap = new FormAsyncProgressBar(new Action<BackgroundWorker>(AddTheTasks), "Adding the tasks");
                 fap.ShowDialog();
                 UpdateTasks();
+            }
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Task toEdit = GetSelectedTask();
+            if(toEdit != null)
+            {
+                FormEditTask fet = new FormEditTask(toEdit.Text);
+                if(fet.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    toEdit.Text = fet.ResultText;
+                    UpdateTasks();
+                }
             }
         }
     }

@@ -28,16 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTasks));
             this.clbTasks = new System.Windows.Forms.CheckedListBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.addTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.batchAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cms = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
+            this.cms.SuspendLayout();
             this.SuspendLayout();
             // 
             // clbTasks
             // 
+            this.clbTasks.ContextMenuStrip = this.cms;
             this.clbTasks.Dock = System.Windows.Forms.DockStyle.Fill;
             this.clbTasks.FormattingEnabled = true;
             this.clbTasks.Location = new System.Drawing.Point(0, 24);
@@ -72,6 +77,20 @@
             this.batchAddToolStripMenuItem.Text = "Batch Add";
             this.batchAddToolStripMenuItem.Click += new System.EventHandler(this.batchAddToolStripMenuItem_Click);
             // 
+            // cms
+            // 
+            this.cms.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem});
+            this.cms.Name = "cms";
+            this.cms.Size = new System.Drawing.Size(95, 26);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.editToolStripMenuItem.Text = "Edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
             // FormTasks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -87,6 +106,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormTasks_FormClosed);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.cms.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,5 +118,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem addTaskToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem batchAddToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip cms;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
     }
 }
