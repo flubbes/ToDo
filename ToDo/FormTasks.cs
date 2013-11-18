@@ -16,7 +16,7 @@ namespace ToDo
         TodoList todoList;
         List<Task> batchAddTaskList;
 
-        public FormTasks(ref TodoList todoList)
+        public FormTasks(TodoList todoList)
         {
             InitializeComponent();
             this.todoList = todoList;
@@ -111,10 +111,7 @@ namespace ToDo
 
         private void clbTasks_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Task old = (Task)curCat.Tasks[e.Index].Clone();
-            curCat.Tasks[e.Index].IsDone = e.NewValue.Equals(CheckState.Checked);
-            Change c = new Change(Environment.UserName, ChangeType.Edit, old, curCat.Tasks[e.Index].Clone());
-            todoList.AddChange(c);
+            curCat.Tasks[e.Index].SetIsDone(e.NewValue.Equals(CheckState.Checked));
         }
 
         private void addTaskToolStripMenuItem_Click(object sender, EventArgs e)

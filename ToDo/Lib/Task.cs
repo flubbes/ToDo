@@ -16,22 +16,34 @@ namespace ToDo.Lib
             set;
         }
 
+        public void SetIsDone(bool newVal)
+        {
+            if (newVal)
+            {
+                DoneAt = DateTime.Now;
+            }
+            else
+            {
+                DoneAt = new DateTime();
+            }
+            object old = this.Clone();
+            bool tempVal = isDone;
+            isDone = newVal;
+            if (isDone != tempVal)
+            {
+                Change c = new Change(Environment.UserName, ChangeType.Edit, old, this.Clone());
+                FormMain.TodoList.AddChange(c);
+            }
+        }
+
         public bool IsDone
         {
             get
             {
                 return isDone;
             }
-            set
+            protected set
             {
-                if (value)
-                {
-                    DoneAt = DateTime.Now;
-                }
-                else
-                {
-                    DoneAt = new DateTime();
-                }
                 isDone = value;
             }
         }

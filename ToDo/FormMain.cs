@@ -15,12 +15,12 @@ namespace ToDo
         private string defaultDB;
         private string loadedDB;
         private DbManager dbm;
-        private TodoList todoList;
         private Settings settings;
         private string settingsPath;
         private List<string> recentFiles;
         private const string recentFilesKeyWord = "RecentFiles";
         private FormChanges formChanges;
+        private static TodoList todoList;
         #endregion
 
         /// <summary>
@@ -42,8 +42,8 @@ namespace ToDo
             LoadRecentFiles();
             UpdateRecentFilesControl();
             UpdateList();
-            taskForm = new FormTasks(ref todoList);
-            todoList.ListChanged += todoList_ListChanged;
+            taskForm = new FormTasks(todoList);
+            TodoList.ListChanged += todoList_ListChanged;
         }
 
         #region events
@@ -77,7 +77,7 @@ namespace ToDo
             f.ShowDialog();
             if (f.NewCat != null)
             {
-                todoList.AddCategory(f.NewCat);
+                TodoList.AddCategory(f.NewCat);
                 UpdateList();
             }
         }
@@ -136,7 +136,7 @@ namespace ToDo
             {
                 try
                 {
-                    todoList = TodoList.DeserializeFromBinary(ofd.FileName);
+                    TodoList = TodoList.DeserializeFromBinary(ofd.FileName);
 
                     loadedDB = Path.GetFullPath(ofd.FileName);
                     AddRecentFile(loadedDB);
@@ -160,7 +160,7 @@ namespace ToDo
             //create a new changes form
             if (formChanges == null || formChanges.IsDisposed)
             {
-                formChanges = new FormChanges(todoList);
+                formChanges = new FormChanges(TodoList);
             }
             
             //show the form
@@ -181,13 +181,13 @@ namespace ToDo
             {
                 if (taskForm.IsClosed)
                 {
-                    taskForm = new FormTasks(ref todoList);
-                    taskForm.UpdateTasks(todoList.Categories[lvCategories.SelectedIndices[0]]);
+                    taskForm = new FormTasks(TodoList);
+                    taskForm.UpdateTasks(TodoList.Categories[lvCategories.SelectedIndices[0]]);
                     taskForm.Show();
                 }
                 else
                 {
-                    taskForm.UpdateTasks(todoList.Categories[lvCategories.SelectedIndices[0]]);
+                    taskForm.UpdateTasks(TodoList.Categories[lvCategories.SelectedIndices[0]]);
                     taskForm.Show();
                 }
                 taskForm.TopMost = true;
@@ -214,7 +214,7 @@ namespace ToDo
             {
                 try
                 {
-                    todoList.FromXml(ofd.FileName);
+                    TodoList.FromXml(ofd.FileName);
                     loadedDB = Path.GetDirectoryName(ofd.FileName) + "imported" + DateTime.Now.ToShortDateString() + ".todo";
                     AddRecentFile(loadedDB);
 
@@ -238,6 +238,18 @@ namespace ToDo
             LoadDatabase(item.Text);
         }
         #endregion
+
+        public static TodoList TodoList
+        {
+            get
+            {
+                return todoList;
+            }
+            private set
+            {
+                todoList = value;
+            }
+        }
 
         /// <summary>
         /// Adds a new recent file to the recent files list
@@ -286,12 +298,12 @@ namespace ToDo
         private void LoadDatabase(string path)
         {
             loadedDB = path;
-            todoList = new TodoList();
+            TodoList = new TodoList();
             if (File.Exists(path))
             {
                 try
                 {
-                    todoList = TodoList.DeserializeFromBinary(defaultDB);
+                    TodoList = TodoList.DeserializeFromBinary(defaultDB);
                 }
                 catch
                 {
@@ -337,7 +349,7 @@ namespace ToDo
         private void UpdateList()
         {
             lvCategories.Items.Clear();
-            foreach (Category c in todoList.Categories)
+            foreach (Category c in TodoList.Categories)
             {
                 AddItemToListView(c.Name, c.TaskCount.ToString(), c.CategoryPercentage.ToString());
             }
@@ -393,7 +405,7 @@ namespace ToDo
 
         private void SaveDbAsync(BackgroundWorker worker)
         {
-            TodoList.SerializeToBinary(ref todoList, loadedDB);
+            TodoList.SerializeToBinary(TodoList, loadedDB);
         }
 
         /// <summary>
@@ -415,9 +427,9 @@ namespace ToDo
                 //if the selection does not contain an invalid value
                 if (lvCategories.SelectedIndices[0] != -1)
                 {
-                    Change c = new Change(Environment.UserName, ChangeType.Delete, todoList.Categories[lvCategories.SelectedIndices[0]].Clone(), null);
-                    todoList.Categories.RemoveAt(lvCategories.SelectedIndices[0]);
-                    todoList.AddChange(c);
+                    Change c = new Change(Environment.UserName, ChangeType.Delete, TodoList.Categories[lvCategories.SelectedIndices[0]].Clone(), null);
+                    TodoList.Categories.RemoveAt(lvCategories.SelectedIndices[0]);
+                    TodoList.AddChange(c);
                 }
             }
         }

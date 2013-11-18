@@ -83,7 +83,7 @@ namespace ToDo.Lib
             }
         }
 
-        public static void SerializeToBinary(ref TodoList theList, string path)
+        public static void SerializeToBinary(TodoList theList, string path)
         {
             using (Stream str = new FileStream(path, FileMode.Create))
             {
@@ -189,7 +189,7 @@ namespace ToDo.Lib
                                                         }
                                                         else if (tA.Name == "IsDone")
                                                         {
-                                                            t.IsDone = Convert.ToBoolean(tA.InnerText);
+                                                            t.SetIsDone(Convert.ToBoolean(tA.InnerText));
                                                         }
                                                         else if (tA.Name == "DoneAt")
                                                         {
