@@ -192,7 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Changelog.txt" />
-    <Content Include="ToDoLogo.ico" />
+    <EmbeddedResource Include="ToDoLogo.ico" />
     <EmbeddedResource Include="ToDoUpdater.exe" />
   </ItemGroup>
   <ItemGroup>

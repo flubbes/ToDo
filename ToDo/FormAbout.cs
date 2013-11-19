@@ -18,7 +18,7 @@ namespace ToDo
         {
             InitializeComponent();
             //lblVersion.Text = "Version: " + ApplicationManager.Updater.LocalVersion.ToString();
-
+            this.Icon = ApplicationManager.GetAppIcon();
             Stream stream = GetType().Assembly.GetManifestResourceStream("ToDo.Changelog.txt");
             byte[] bytes = new byte[(int)stream.Length];
             stream.Read(bytes, 0, bytes.Length);

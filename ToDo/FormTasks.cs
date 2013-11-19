@@ -19,6 +19,7 @@ namespace ToDo
         public FormTasks(TodoList todoList)
         {
             InitializeComponent();
+            this.Icon = ApplicationManager.GetAppIcon();
             this.todoList = todoList;
         }
 

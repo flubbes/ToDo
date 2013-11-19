@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAbout));
             this.rtbChangelog = new System.Windows.Forms.RichTextBox();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -70,7 +69,6 @@
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.rtbChangelog);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormAbout";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";

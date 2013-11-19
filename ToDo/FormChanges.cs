@@ -16,6 +16,7 @@ namespace ToDo
         public FormChanges(TodoList tl)
         {
             InitializeComponent();
+            this.Icon = ApplicationManager.GetAppIcon();
             this.todoList = tl;
             UpdateListView();
             tl.ListChanged += tl_ListChanged;

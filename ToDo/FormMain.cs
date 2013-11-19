@@ -29,6 +29,7 @@ namespace ToDo
         public FormMain()
         {
             InitializeComponent();
+            this.Icon = ApplicationManager.GetAppIcon();
             ApplicationManager.Initialize();
         }
 
