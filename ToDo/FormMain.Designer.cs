@@ -29,12 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.lvCategories = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.olvTasks = new BrightIdeasSoftware.ObjectListView();
+            this.olvcText = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tspbActionProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.tsslCurrentAction = new System.Windows.Forms.ToolStripStatusLabel();
@@ -42,65 +40,67 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadTodoListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recentFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importOldXMLFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showChangesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.olvcPriority = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.olvcDueDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvcEstimatedTime = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cmsMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.olvTasks)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lvCategories
-            // 
-            this.lvCategories.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.lvCategories.ContextMenuStrip = this.cmsMenu;
-            this.lvCategories.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvCategories.FullRowSelect = true;
-            this.lvCategories.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.lvCategories.Location = new System.Drawing.Point(0, 24);
-            this.lvCategories.MultiSelect = false;
-            this.lvCategories.Name = "lvCategories";
-            this.lvCategories.Size = new System.Drawing.Size(573, 248);
-            this.lvCategories.TabIndex = 1;
-            this.lvCategories.UseCompatibleStateImageBehavior = false;
-            this.lvCategories.View = System.Windows.Forms.View.Details;
-            this.lvCategories.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvCategories_KeyDown);
-            this.lvCategories.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvCategories_MouseDoubleClick);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 86;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Tasks";
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Progress";
-            this.columnHeader3.Width = 62;
-            // 
             // cmsMenu
             // 
             this.cmsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editToolStripMenuItem});
+            this.editToolStripMenuItem,
+            this.deleteToolStripMenuItem});
             this.cmsMenu.Name = "cmsMenu";
-            this.cmsMenu.Size = new System.Drawing.Size(96, 26);
+            this.cmsMenu.Size = new System.Drawing.Size(153, 70);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // olvTasks
+            // 
+            this.olvTasks.AllColumns.Add(this.olvcText);
+            this.olvTasks.AllColumns.Add(this.olvcPriority);
+            this.olvTasks.AllColumns.Add(this.olvcDueDate);
+            this.olvTasks.AllColumns.Add(this.olvcEstimatedTime);
+            this.olvTasks.AllowColumnReorder = true;
+            this.olvTasks.BackColor = System.Drawing.SystemColors.Window;
+            this.olvTasks.CheckBoxes = true;
+            this.olvTasks.CheckedAspectName = "IsDone";
+            this.olvTasks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvcText,
+            this.olvcPriority,
+            this.olvcDueDate,
+            this.olvcEstimatedTime});
+            this.olvTasks.ContextMenuStrip = this.cmsMenu;
+            this.olvTasks.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.olvTasks.FullRowSelect = true;
+            this.olvTasks.Location = new System.Drawing.Point(0, 24);
+            this.olvTasks.Name = "olvTasks";
+            this.olvTasks.Size = new System.Drawing.Size(573, 248);
+            this.olvTasks.TabIndex = 1;
+            this.olvTasks.UseCompatibleStateImageBehavior = false;
+            this.olvTasks.View = System.Windows.Forms.View.Details;
+            // 
+            // olvcText
+            // 
+            this.olvcText.AspectName = "Text";
+            this.olvcText.CellPadding = null;
+            this.olvcText.Text = "Text";
             // 
             // statusStrip1
             // 
@@ -128,7 +128,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.addCategoryToolStripMenuItem,
+            this.addTaskToolStripMenuItem,
             this.showChangesToolStripMenuItem1,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -141,8 +141,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadTodoListToolStripMenuItem,
-            this.recentFilesToolStripMenuItem,
-            this.importOldXMLFileToolStripMenuItem});
+            this.recentFilesToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -150,29 +149,22 @@
             // loadTodoListToolStripMenuItem
             // 
             this.loadTodoListToolStripMenuItem.Name = "loadTodoListToolStripMenuItem";
-            this.loadTodoListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadTodoListToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.loadTodoListToolStripMenuItem.Text = "Load TodoList";
             this.loadTodoListToolStripMenuItem.Click += new System.EventHandler(this.loadTodoListToolStripMenuItem_Click);
             // 
             // recentFilesToolStripMenuItem
             // 
             this.recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
-            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.recentFilesToolStripMenuItem.Text = "Recent Files";
             // 
-            // importOldXMLFileToolStripMenuItem
+            // addTaskToolStripMenuItem
             // 
-            this.importOldXMLFileToolStripMenuItem.Name = "importOldXMLFileToolStripMenuItem";
-            this.importOldXMLFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.importOldXMLFileToolStripMenuItem.Text = "Import old XML-File";
-            this.importOldXMLFileToolStripMenuItem.Click += new System.EventHandler(this.importOldXMLFileToolStripMenuItem_Click);
-            // 
-            // addCategoryToolStripMenuItem
-            // 
-            this.addCategoryToolStripMenuItem.Name = "addCategoryToolStripMenuItem";
-            this.addCategoryToolStripMenuItem.Size = new System.Drawing.Size(92, 20);
-            this.addCategoryToolStripMenuItem.Text = "Add Category";
-            this.addCategoryToolStripMenuItem.Click += new System.EventHandler(this.addCategoryToolStripMenuItem_Click);
+            this.addTaskToolStripMenuItem.Name = "addTaskToolStripMenuItem";
+            this.addTaskToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.addTaskToolStripMenuItem.Text = "Add task";
+            this.addTaskToolStripMenuItem.Click += new System.EventHandler(this.addTaskToolStripMenuItem_Click);
             // 
             // showChangesToolStripMenuItem1
             // 
@@ -204,12 +196,37 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // olvcPriority
+            // 
+            this.olvcPriority.AspectName = "Priority";
+            this.olvcPriority.CellPadding = null;
+            this.olvcPriority.Text = "Priority";
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // olvcDueDate
+            // 
+            this.olvcDueDate.AspectName = "DueDate";
+            this.olvcDueDate.CellPadding = null;
+            this.olvcDueDate.Text = "Due date";
+            // 
+            // olvcEstimatedTime
+            // 
+            this.olvcEstimatedTime.AspectName = "EstimatedTime";
+            this.olvcEstimatedTime.CellPadding = null;
+            this.olvcEstimatedTime.Text = "Estimated time";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(573, 294);
-            this.Controls.Add(this.lvCategories);
+            this.Controls.Add(this.olvTasks);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.statusStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -219,6 +236,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.cmsMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.olvTasks)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -230,25 +248,26 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView lvCategories;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar tspbActionProgress;
         private System.Windows.Forms.ToolStripStatusLabel tsslCurrentAction;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem addCategoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadTodoListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip cmsMenu;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showChangesToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem importOldXMLFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private BrightIdeasSoftware.ObjectListView olvTasks;
+        private BrightIdeasSoftware.OLVColumn olvcText;
+        private System.Windows.Forms.ToolStripMenuItem addTaskToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn olvcPriority;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn olvcDueDate;
+        private BrightIdeasSoftware.OLVColumn olvcEstimatedTime;
 
     }
 }

@@ -7,13 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ToDo.Lib;
-
 namespace ToDo
 {
     public partial class FormChanges : Form
     {
-        TodoList todoList;
-        public FormChanges(TodoList tl)
+        ToDoList todoList;
+        public FormChanges(ToDoList tl)
         {
             InitializeComponent();
             this.Icon = ApplicationManager.GetAppIcon();
@@ -39,11 +38,6 @@ namespace ToDo
             return string.Format("Done: {0} Text: {1}", t.IsDone, t.Text);
         }
 
-        public string ColumnStringFromCategory(Category c)
-        {
-            return string.Format("Tasks: {0} Text: {1}", c.TaskCount, c.Name);
-        }
-
         public void UpdateListView()
         {
             lvChanges.Items.Clear();
@@ -67,11 +61,6 @@ namespace ToDo
                     Task t = (Task)before;
                     item.SubItems.Add(ColumnStringFromTask(t));
                 }
-                else if(before != null && before.GetType() == typeof(Category))
-                {
-                    Category t = (Category)before;
-                    item.SubItems.Add(ColumnStringFromCategory(t));
-                }
                 else
                 {
                     item.SubItems.Add("");
@@ -82,11 +71,6 @@ namespace ToDo
                 {
                     Task t = (Task)after;
                     item.SubItems.Add(ColumnStringFromTask(t));
-                }
-                else if (after != null && after.GetType() == typeof(Category))
-                {
-                    Category t = (Category)after;
-                    item.SubItems.Add(ColumnStringFromCategory(t));
                 }
                 else
                 {

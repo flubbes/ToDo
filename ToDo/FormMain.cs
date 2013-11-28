@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -11,7 +12,6 @@ namespace ToDo
     public partial class FormMain : Form
     {
         #region private fields and constants
-        private FormTasks taskForm;
         private string defaultDB;
         private string loadedDB;
         private DbManager dbm;
@@ -20,7 +20,9 @@ namespace ToDo
         private List<string> recentFiles;
         private const string recentFilesKeyWord = "RecentFiles";
         private FormChanges formChanges;
-        private static TodoList todoList;
+        private static ToDoList todoList;
+        
+
         #endregion
 
         /// <summary>
@@ -30,7 +32,29 @@ namespace ToDo
         {
             InitializeComponent();
             this.Icon = ApplicationManager.GetAppIcon();
+            InitObjectListView();
+            
             ApplicationManager.Initialize();
+        }
+
+        public void InitObjectListView()
+        {
+            foreach(OLVColumn column in olvTasks.Columns)
+            {
+                column.GroupKeyGetter = GroupKeyGetter;
+                
+            }
+            olvcText.FillsFreeSpace = true;
+        }
+
+        private string GroupKeyGetter(object rowObject)
+        {
+            Task t = ((Task)rowObject);
+            if (string.IsNullOrEmpty(t.Category))
+            {
+                return "No Category";
+            }
+            return t.Category;
         }
 
         public void InitializeTodo()
@@ -43,8 +67,7 @@ namespace ToDo
             LoadRecentFiles();
             UpdateRecentFilesControl();
             UpdateList();
-            taskForm = new FormTasks(todoList);
-            TodoList.ListChanged += todoList_ListChanged;
+            ToDoList.ListChanged += todoList_ListChanged;
         }
 
         #region events
@@ -67,21 +90,6 @@ namespace ToDo
             
         }
 
-        /// <summary>
-        /// triggered when the add category button is clicked
-        /// </summary>
-        /// <param name="sender">The sender of this event</param>
-        /// <param name="e">The event data</param>
-        private void addCategoryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FormAddCategory f = new FormAddCategory();
-            f.ShowDialog();
-            if (f.NewCat != null)
-            {
-                TodoList.AddCategory(f.NewCat);
-                UpdateList();
-            }
-        }
 
         /// <summary>
         /// Is triggered when an item got doubleclicked
@@ -128,7 +136,7 @@ namespace ToDo
             OpenFileDialog ofd = new OpenFileDialog();
 
             //set the filter to only .todo files
-            ofd.Filter = "Todo-Lists|*.todo";
+            ofd.Filter = "Todo-Lists|*.todo|Old Xml TodoList|*.xml";
 
             //set the initial directory to the path where the executeable is
             ofd.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath);
@@ -137,7 +145,7 @@ namespace ToDo
             {
                 try
                 {
-                    TodoList = TodoList.DeserializeFromBinary(ofd.FileName);
+                    ToDoList = DbVersionManager.ReadToDoList(ofd.FileName);
 
                     loadedDB = Path.GetFullPath(ofd.FileName);
                     AddRecentFile(loadedDB);
@@ -161,7 +169,7 @@ namespace ToDo
             //create a new changes form
             if (formChanges == null || formChanges.IsDisposed)
             {
-                formChanges = new FormChanges(TodoList);
+                formChanges = new FormChanges(ToDoList);
             }
             
             //show the form
@@ -178,55 +186,15 @@ namespace ToDo
         /// <param name="e">The event data</param>
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (lvCategories.SelectedIndices.Count >= 1)
+            int index = olvTasks.SelectedIndex;
+            Task t = ToDoList.Tasks[index]; 
+            FormTask ft = new FormTask("Edit a task", t);
+            if(ft.ShowDialog() == DialogResult.OK)
             {
-                if (taskForm.IsClosed)
-                {
-                    taskForm = new FormTasks(TodoList);
-                    taskForm.UpdateTasks(TodoList.Categories[lvCategories.SelectedIndices[0]]);
-                    taskForm.Show();
-                }
-                else
-                {
-                    taskForm.UpdateTasks(TodoList.Categories[lvCategories.SelectedIndices[0]]);
-                    taskForm.Show();
-                }
-                taskForm.TopMost = true;
-                taskForm.TopMost = false;
+                ToDoList.ModifyTaskByIndex(index, t);
             }
         }
 
-        /// <summary>
-        /// Triggered when the import old xml file button is clicked
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">the event data</param>
-        private void importOldXMLFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-
-            //set the filter to only .todo files
-            ofd.Filter = "Todo-List|*.xml";
-
-            //set the initial directory to the path where the executeable is
-            ofd.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath);
-            ofd.Multiselect = false;
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                try
-                {
-                    TodoList.FromXml(ofd.FileName);
-                    loadedDB = Path.GetDirectoryName(ofd.FileName) + "imported" + DateTime.Now.ToShortDateString() + ".todo";
-                    AddRecentFile(loadedDB);
-
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("This database is corrupted!");
-                }
-                UpdateList();
-            }
-        }
 
         /// <summary>
         /// Triggered when a recent file drop down item is clicked
@@ -240,7 +208,7 @@ namespace ToDo
         }
         #endregion
 
-        public static TodoList TodoList
+        public static ToDoList ToDoList
         {
             get
             {
@@ -299,12 +267,13 @@ namespace ToDo
         private void LoadDatabase(string path)
         {
             loadedDB = path;
-            TodoList = new TodoList();
+            ToDoList = new ToDoList();
             if (File.Exists(path))
             {
+                
                 try
                 {
-                    TodoList = TodoList.DeserializeFromBinary(defaultDB);
+                    ToDoList = DbVersionManager.ReadToDoList(path);
                 }
                 catch
                 {
@@ -349,28 +318,11 @@ namespace ToDo
         /// </summary>
         private void UpdateList()
         {
-            lvCategories.Items.Clear();
-            foreach (Category c in TodoList.Categories)
-            {
-                AddItemToListView(c.Name, c.TaskCount.ToString(), c.CategoryPercentage.ToString());
-            }
-            ResizeColumns();
+            olvTasks.SetObjects(ToDoList.Tasks);
         }
 
         private void ResizeColumns()
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new MethodInvoker(() => lvCategories.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)));
-                this.Invoke(new MethodInvoker(() => lvCategories.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.HeaderSize)));
-                this.Invoke(new MethodInvoker(() => lvCategories.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.HeaderSize)));
-            }
-            else
-            {
-                lvCategories.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                lvCategories.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.HeaderSize);
-                lvCategories.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.HeaderSize);
-            }
         }
 
         /// <summary>
@@ -382,17 +334,6 @@ namespace ToDo
         private void AddItemToListView(string categoryName, string taskCount, string categoryPercentage)
         {
             
-            ListViewItem i = new ListViewItem(categoryName);
-            i.SubItems.Add(taskCount);
-            i.SubItems.Add(categoryPercentage);
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new MethodInvoker(() => lvCategories.Items.Add(i)));
-            }
-            else
-            {
-                lvCategories.Items.Add(i);
-            }
         }
 
         /// <summary>
@@ -406,7 +347,7 @@ namespace ToDo
 
         private void SaveDbAsync(BackgroundWorker worker)
         {
-            TodoList.SerializeToBinary(TodoList, loadedDB);
+            ToDoList.Serialize(ToDoList, loadedDB);
         }
 
         /// <summary>
@@ -423,16 +364,7 @@ namespace ToDo
         /// </summary>
         private void DeleteSelection()
         {
-            if (lvCategories.SelectedIndices.Count > 0)
-            {
-                //if the selection does not contain an invalid value
-                if (lvCategories.SelectedIndices[0] != -1)
-                {
-                    Change c = new Change(Environment.UserName, ChangeType.Delete, TodoList.Categories[lvCategories.SelectedIndices[0]].Clone(), null);
-                    TodoList.Categories.RemoveAt(lvCategories.SelectedIndices[0]);
-                    TodoList.AddChange(c);
-                }
-            }
+
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -466,6 +398,20 @@ namespace ToDo
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new FormAbout().ShowDialog();
+        }
+
+        private void addTaskToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormTask fat = new FormTask("Add a new Task");
+            if(fat.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                ToDoList.AddTask(fat.Result);
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToDoList.RemoveAtIndex(olvTasks.SelectedIndex);
         }
     }
 }

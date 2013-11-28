@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToDo.Lib
+namespace ToDo.Lib.FormatPre04
 {
     [Serializable]
     public class Category : ICloneable

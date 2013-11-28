@@ -12,8 +12,8 @@ namespace ToDo
 {
     public partial class FormTasks : Form
     {
-        Category curCat;
-        TodoList todoList;
+        /*Category curCat;
+        ToDoList todoList;
         List<Task> batchAddTaskList;
 
         public FormTasks(TodoList todoList)
@@ -175,6 +175,6 @@ namespace ToDo
                     todoList.AddChange(c);
                 }
             }
-        }
+        }*/
     }
 }

@@ -50,8 +50,6 @@
             this.clbTasks.Name = "clbTasks";
             this.clbTasks.Size = new System.Drawing.Size(637, 252);
             this.clbTasks.TabIndex = 0;
-            this.clbTasks.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbTasks_ItemCheck);
-            this.clbTasks.KeyDown += new System.Windows.Forms.KeyEventHandler(this.clbTasks_KeyDown);
             // 
             // cms
             // 
@@ -65,7 +63,6 @@
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
             // menuStrip1
             // 
@@ -83,14 +80,12 @@
             this.addTaskToolStripMenuItem.Name = "addTaskToolStripMenuItem";
             this.addTaskToolStripMenuItem.Size = new System.Drawing.Size(106, 20);
             this.addTaskToolStripMenuItem.Text = "Add Task [Enter]";
-            this.addTaskToolStripMenuItem.Click += new System.EventHandler(this.addTaskToolStripMenuItem_Click);
             // 
             // batchAddToolStripMenuItem
             // 
             this.batchAddToolStripMenuItem.Name = "batchAddToolStripMenuItem";
             this.batchAddToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
             this.batchAddToolStripMenuItem.Text = "Batch Add";
-            this.batchAddToolStripMenuItem.Click += new System.EventHandler(this.batchAddToolStripMenuItem_Click);
             // 
             // FormTasks
             // 
@@ -104,7 +99,6 @@
             this.Name = "FormTasks";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormTasks";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormTasks_FormClosed);
             this.cms.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

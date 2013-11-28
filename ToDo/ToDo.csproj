@@ -57,7 +57,7 @@
       <HintPath>.\KaBeLib.dll</HintPath>
     </Reference>
     <Reference Include="ObjectListView">
-      <HintPath>..\ObjectListView.dll</HintPath>
+      <HintPath>.\ObjectListView.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -83,11 +83,11 @@
     <Compile Include="FormAddCategory.Designer.cs">
       <DependentUpon>FormAddCategory.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormAddTask.cs">
+    <Compile Include="FormTask.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormAddTask.Designer.cs">
-      <DependentUpon>FormAddTask.cs</DependentUpon>
+    <Compile Include="FormTask.Designer.cs">
+      <DependentUpon>FormTask.cs</DependentUpon>
     </Compile>
     <Compile Include="FormAsyncProgressBar.cs">
       <SubType>Form</SubType>
@@ -126,7 +126,8 @@
       <DependentUpon>FormTasks.cs</DependentUpon>
     </Compile>
     <Compile Include="Lib\ApplicationManager.cs" />
-    <Compile Include="Lib\Category.cs" />
+    <Compile Include="Lib\DbVersionManager.cs" />
+    <Compile Include="Lib\FormatPre04\Category.cs" />
     <Compile Include="Lib\Change.cs" />
     <Compile Include="Lib\ChangeType.cs" />
     <Compile Include="FormEditTask.cs">
@@ -135,12 +136,15 @@
     <Compile Include="FormEditTask.Designer.cs">
       <DependentUpon>FormEditTask.cs</DependentUpon>
     </Compile>
-    <Compile Include="Lib\TodoListChangedEventArgs.cs" />
-    <Compile Include="Lib\TodoList.cs" />
+    <Compile Include="Lib\FormatPre04\TodoListChangedEventArgs.cs" />
+    <Compile Include="Lib\FormatPre04\TodoList.cs" />
     <Compile Include="Lib\DbManager.cs" />
     <Compile Include="Lib\Ftp\FtpManager.cs" />
     <Compile Include="Lib\Settings.cs" />
+    <Compile Include="Lib\FormatPre04\Task.cs" />
     <Compile Include="Lib\Task.cs" />
+    <Compile Include="Lib\ToDoList.cs" />
+    <Compile Include="Lib\ToDoListVersion.cs" />
     <Compile Include="Lib\Updater.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -150,8 +154,8 @@
     <EmbeddedResource Include="FormAddCategory.resx">
       <DependentUpon>FormAddCategory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAddTask.resx">
-      <DependentUpon>FormAddTask.cs</DependentUpon>
+    <EmbeddedResource Include="FormTask.resx">
+      <DependentUpon>FormTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAsyncProgressBar.resx">
       <DependentUpon>FormAsyncProgressBar.cs</DependentUpon>
@@ -222,6 +226,7 @@
     <EmbeddedResource Include="KaBeLib.dll" />
     <EmbeddedResource Include="ObjectListView.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
