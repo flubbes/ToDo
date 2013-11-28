@@ -15,8 +15,11 @@ namespace ToDo.Lib
         DateTime lastCheck;
         string updaterPath, newTodoPath, toDoPath;
 
+
+
         public Updater()
         {
+
             updaterPath = ApplicationManager.GetAppPath() + "ToDoUpdater.exe";
             newTodoPath = ApplicationManager.GetAppPath() + "ToDo_new.exe";
             toDoPath = ApplicationManager.GetAppPath() + "ToDo.exe";
