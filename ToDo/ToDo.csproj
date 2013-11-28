@@ -130,12 +130,6 @@
     <Compile Include="Lib\FormatPre04\Category.cs" />
     <Compile Include="Lib\Change.cs" />
     <Compile Include="Lib\ChangeType.cs" />
-    <Compile Include="FormEditTask.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormEditTask.Designer.cs">
-      <DependentUpon>FormEditTask.cs</DependentUpon>
-    </Compile>
     <Compile Include="Lib\FormatPre04\TodoListChangedEventArgs.cs" />
     <Compile Include="Lib\FormatPre04\TodoList.cs" />
     <Compile Include="Lib\DbManager.cs" />
@@ -165,9 +159,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormChanges.resx">
       <DependentUpon>FormChanges.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormEditTask.resx">
-      <DependentUpon>FormEditTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

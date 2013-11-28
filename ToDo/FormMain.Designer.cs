@@ -31,8 +31,12 @@
             this.components = new System.ComponentModel.Container();
             this.cmsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.olvTasks = new BrightIdeasSoftware.ObjectListView();
             this.olvcText = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvcPriority = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvcDueDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvcEstimatedTime = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tspbActionProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.tsslCurrentAction = new System.Windows.Forms.ToolStripStatusLabel();
@@ -45,10 +49,6 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.olvcPriority = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.olvcDueDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvcEstimatedTime = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cmsMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.olvTasks)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -61,7 +61,7 @@
             this.editToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.cmsMenu.Name = "cmsMenu";
-            this.cmsMenu.Size = new System.Drawing.Size(153, 70);
+            this.cmsMenu.Size = new System.Drawing.Size(108, 48);
             // 
             // editToolStripMenuItem
             // 
@@ -70,6 +70,13 @@
             this.editToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // olvTasks
             // 
@@ -95,12 +102,31 @@
             this.olvTasks.TabIndex = 1;
             this.olvTasks.UseCompatibleStateImageBehavior = false;
             this.olvTasks.View = System.Windows.Forms.View.Details;
+            this.olvTasks.KeyDown += new System.Windows.Forms.KeyEventHandler(this.olvTasks_KeyDown);
             // 
             // olvcText
             // 
             this.olvcText.AspectName = "Text";
             this.olvcText.CellPadding = null;
             this.olvcText.Text = "Text";
+            // 
+            // olvcPriority
+            // 
+            this.olvcPriority.AspectName = "Priority";
+            this.olvcPriority.CellPadding = null;
+            this.olvcPriority.Text = "Priority";
+            // 
+            // olvcDueDate
+            // 
+            this.olvcDueDate.AspectName = "DueDate";
+            this.olvcDueDate.CellPadding = null;
+            this.olvcDueDate.Text = "Due date";
+            // 
+            // olvcEstimatedTime
+            // 
+            this.olvcEstimatedTime.AspectName = "EstimatedTime";
+            this.olvcEstimatedTime.CellPadding = null;
+            this.olvcEstimatedTime.Text = "Estimated time";
             // 
             // statusStrip1
             // 
@@ -162,8 +188,8 @@
             // addTaskToolStripMenuItem
             // 
             this.addTaskToolStripMenuItem.Name = "addTaskToolStripMenuItem";
-            this.addTaskToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
-            this.addTaskToolStripMenuItem.Text = "Add task";
+            this.addTaskToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
+            this.addTaskToolStripMenuItem.Text = "Add task [Return]";
             this.addTaskToolStripMenuItem.Click += new System.EventHandler(this.addTaskToolStripMenuItem_Click);
             // 
             // showChangesToolStripMenuItem1
@@ -195,31 +221,6 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // olvcPriority
-            // 
-            this.olvcPriority.AspectName = "Priority";
-            this.olvcPriority.CellPadding = null;
-            this.olvcPriority.Text = "Priority";
-            // 
-            // deleteToolStripMenuItem
-            // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.deleteToolStripMenuItem.Text = "Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // olvcDueDate
-            // 
-            this.olvcDueDate.AspectName = "DueDate";
-            this.olvcDueDate.CellPadding = null;
-            this.olvcDueDate.Text = "Due date";
-            // 
-            // olvcEstimatedTime
-            // 
-            this.olvcEstimatedTime.AspectName = "EstimatedTime";
-            this.olvcEstimatedTime.CellPadding = null;
-            this.olvcEstimatedTime.Text = "Estimated time";
             // 
             // FormMain
             // 

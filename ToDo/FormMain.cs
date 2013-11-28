@@ -39,15 +39,33 @@ namespace ToDo
 
         public void InitObjectListView()
         {
-            foreach(OLVColumn column in olvTasks.Columns)
-            {
-                column.GroupKeyGetter = GroupKeyGetter;
-                
-            }
+            olvcPriority.GroupKeyGetter = PriorityGroupKeyGetter;
+            olvcText.GroupKeyGetter = CategoryGroupKeyGetter;
+            olvcDueDate.GroupKeyGetter = DueDateGroupKeyGetter;
+            olvcEstimatedTime.GroupKeyGetter = EstimatedGroupKeyGetter;
+
             olvcText.FillsFreeSpace = true;
         }
 
-        private string GroupKeyGetter(object rowObject)
+        private object EstimatedGroupKeyGetter(object rowObject)
+        {
+            Task t = ((Task)rowObject);
+            return t.EstimatedTime;
+        }
+
+        private object DueDateGroupKeyGetter(object rowObject)
+        {
+            Task t = ((Task)rowObject);
+            return t.DueDate;
+        }
+
+        private object PriorityGroupKeyGetter(object rowObject)
+        {
+            Task t = ((Task)rowObject);
+            return t.Priority;
+        }
+
+        private string CategoryGroupKeyGetter(object rowObject)
         {
             Task t = ((Task)rowObject);
             if (string.IsNullOrEmpty(t.Category))
@@ -110,20 +128,6 @@ namespace ToDo
         {
             SaveSettings();
             SaveDB();
-        }
-
-        /// <summary>
-        /// Is triggered when a key is down on the listView
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event data</param>
-        private void lvCategories_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if the key is the DEL key
-            if (e.KeyCode == Keys.Delete)
-            {
-                DeleteSelection();
-            }
         }
 
         /// <summary>
@@ -325,16 +329,6 @@ namespace ToDo
         {
         }
 
-        /// <summary>
-        /// Adds a new item to the listView
-        /// </summary>
-        /// <param name="categoryName">The name of the category</param>
-        /// <param name="taskCount">The number of tasks in this category</param>
-        /// <param name="categoryPercentage">The percentage of this category</param>
-        private void AddItemToListView(string categoryName, string taskCount, string categoryPercentage)
-        {
-            
-        }
 
         /// <summary>
         /// Stores the currently loaded db in a binary file
@@ -357,14 +351,6 @@ namespace ToDo
         {
             settings.StoreSetting(recentFilesKeyWord, recentFiles);
             settings.Serialize(settingsPath);
-        }
-
-        /// <summary>
-        /// Deletes the current selection
-        /// </summary>
-        private void DeleteSelection()
-        {
-
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -412,6 +398,18 @@ namespace ToDo
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ToDoList.RemoveAtIndex(olvTasks.SelectedIndex);
+        }
+
+        private void olvTasks_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                addTaskToolStripMenuItem.PerformClick();
+            }
+            if(e.KeyCode == Keys.Delete)
+            {
+                deleteToolStripMenuItem.PerformClick();
+            }
         }
     }
 }
