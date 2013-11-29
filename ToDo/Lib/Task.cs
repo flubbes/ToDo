@@ -28,6 +28,12 @@ namespace ToDo.Lib
             set;
         }
 
+        public DateTime ArchivedAt
+        {
+            get;
+            set;
+        }
+
         public void SetIsDone(bool newVal)
         {
             if (newVal)
@@ -88,6 +94,7 @@ namespace ToDo.Lib
             t.EstimatedTime = this.EstimatedTime;
             t.Priority = this.Priority;
             t.Category = this.Category;
+            t.ArchivedAt = this.ArchivedAt;
             return t;
         }
     }

@@ -10,6 +10,7 @@ namespace ToDo.Lib
     {
         Add,
         Edit,
-        Delete
+        Delete,
+        Archived
     }
 }

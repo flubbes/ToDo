@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.cmsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.archiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.olvTasks = new BrightIdeasSoftware.ObjectListView();
             this.olvcText = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -45,7 +46,10 @@
             this.loadTodoListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recentFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showChangesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.showChangesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.archiveToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,22 +63,30 @@
             // 
             this.cmsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editToolStripMenuItem,
+            this.archiveToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.cmsMenu.Name = "cmsMenu";
-            this.cmsMenu.Size = new System.Drawing.Size(108, 48);
+            this.cmsMenu.Size = new System.Drawing.Size(115, 70);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // archiveToolStripMenuItem
+            // 
+            this.archiveToolStripMenuItem.Name = "archiveToolStripMenuItem";
+            this.archiveToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.archiveToolStripMenuItem.Text = "Archive";
+            this.archiveToolStripMenuItem.Click += new System.EventHandler(this.archiveToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -155,6 +167,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.addTaskToolStripMenuItem,
+            this.settingsToolStripMenuItem,
             this.showChangesToolStripMenuItem1,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -192,12 +205,35 @@
             this.addTaskToolStripMenuItem.Text = "Add task [Return]";
             this.addTaskToolStripMenuItem.Click += new System.EventHandler(this.addTaskToolStripMenuItem_Click);
             // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            // 
             // showChangesToolStripMenuItem1
             // 
+            this.showChangesToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showChangesToolStripMenuItem,
+            this.archiveToolStripMenuItem1});
             this.showChangesToolStripMenuItem1.Name = "showChangesToolStripMenuItem1";
-            this.showChangesToolStripMenuItem1.Size = new System.Drawing.Size(95, 20);
-            this.showChangesToolStripMenuItem1.Text = "Show changes";
-            this.showChangesToolStripMenuItem1.Click += new System.EventHandler(this.showChangesToolStripMenuItem1_Click);
+            this.showChangesToolStripMenuItem1.Size = new System.Drawing.Size(44, 20);
+            this.showChangesToolStripMenuItem1.Text = "View";
+            // 
+            // showChangesToolStripMenuItem
+            // 
+            this.showChangesToolStripMenuItem.Name = "showChangesToolStripMenuItem";
+            this.showChangesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showChangesToolStripMenuItem.Text = "Changes";
+            this.showChangesToolStripMenuItem.Click += new System.EventHandler(this.showChangesToolStripMenuItem_Click);
+            // 
+            // archiveToolStripMenuItem1
+            // 
+            this.archiveToolStripMenuItem1.Name = "archiveToolStripMenuItem1";
+            this.archiveToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.archiveToolStripMenuItem1.Text = "Archive";
+            this.archiveToolStripMenuItem1.Click += new System.EventHandler(this.archiveToolStripMenuItem1_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -269,6 +305,10 @@
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn olvcDueDate;
         private BrightIdeasSoftware.OLVColumn olvcEstimatedTime;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem archiveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showChangesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem archiveToolStripMenuItem1;
 
     }
 }

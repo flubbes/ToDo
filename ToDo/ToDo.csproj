@@ -119,11 +119,11 @@
     <Compile Include="FormSplashScreen.Designer.cs">
       <DependentUpon>FormSplashScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormTasks.cs">
+    <Compile Include="FormArchive.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormTasks.Designer.cs">
-      <DependentUpon>FormTasks.cs</DependentUpon>
+    <Compile Include="FormArchive.Designer.cs">
+      <DependentUpon>FormArchive.cs</DependentUpon>
     </Compile>
     <Compile Include="Lib\ApplicationManager.cs" />
     <Compile Include="Lib\DbVersionManager.cs" />
@@ -166,8 +166,8 @@
     <EmbeddedResource Include="FormSplashScreen.resx">
       <DependentUpon>FormSplashScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormTasks.resx">
-      <DependentUpon>FormTasks.cs</DependentUpon>
+    <EmbeddedResource Include="FormArchive.resx">
+      <DependentUpon>FormArchive.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

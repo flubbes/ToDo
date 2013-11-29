@@ -21,6 +21,7 @@ namespace ToDo.Lib
         {
             Changes = new List<Change>();
             Tasks = new List<Task>();
+            ArchivedTasks = new List<Task>();
         }
 
         public void AddChangeWithoutEventTriggering(Change c)
@@ -36,8 +37,36 @@ namespace ToDo.Lib
             AddChange(new Change(Environment.UserName, ChangeType.Edit, old, t.Clone()));
         }
 
+        public void ArchiveTask(int index)
+        {
+            if(ArchivedTasks == null)
+            {
+                ArchivedTasks = new List<Task>();
+            }
+            if (index >= Tasks.Count || index < 0)
+            {
+                return;
+            }
+            Task old = (Task)Tasks[index].Clone();
+            Task t = (Task)old.Clone();
+            t.ArchivedAt = DateTime.Now;
+            ArchivedTasks.Add(t);
+            Tasks.RemoveAt(index);
+            AddChange(new Change(Environment.UserName, ChangeType.Archived,old, t));
+        }
+
+        public List<Task> ArchivedTasks
+        {
+            get;
+            private set;
+        }
+
         public void RemoveAtIndex(int index)
         {
+            if(index >= Tasks.Count  || index < 0)
+            {
+                return;
+            }
             Task old = (Task)Tasks[index].Clone();
             Tasks.RemoveAt(index);
             AddChange(new Change(Environment.UserName, ChangeType.Delete, old, null));

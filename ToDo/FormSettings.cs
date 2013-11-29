@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ToDo.Lib;
 
 namespace ToDo
 {
@@ -15,6 +16,19 @@ namespace ToDo
         public FormSettings()
         {
             InitializeComponent();
+            cbStartWithWindows.Checked = KabeLib.Registry.AutostartControl.IsSettedCorrectly("ToDo", "\"" + Application.ExecutablePath + "\"");
+            try { cbTopMost.Checked = FormMain.Settings.GetSetting<bool>("TopMost"); }
+            catch { }
+        }
+
+        private void cbTopMost_CheckedChanged(object sender, EventArgs e)
+        {
+            FormMain.Settings.StoreSetting("TopMost", cbTopMost.Checked);
+        }
+
+        private void cbStartWithWindows_CheckedChanged(object sender, EventArgs e)
+        {
+            KabeLib.Registry.AutostartControl.SetStartup(Application.ExecutablePath, "ToDo", cbStartWithWindows.Checked);
         }
     }
 }

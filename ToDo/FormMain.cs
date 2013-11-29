@@ -33,7 +33,6 @@ namespace ToDo
             InitializeComponent();
             this.Icon = ApplicationManager.GetAppIcon();
             InitObjectListView();
-            
             ApplicationManager.Initialize();
         }
 
@@ -45,6 +44,12 @@ namespace ToDo
             olvcEstimatedTime.GroupKeyGetter = EstimatedGroupKeyGetter;
 
             olvcText.FillsFreeSpace = true;
+        }
+
+        public static Settings Settings
+        {
+            get;
+            set;
         }
 
         private object EstimatedGroupKeyGetter(object rowObject)
@@ -164,26 +169,6 @@ namespace ToDo
         }
 
         /// <summary>
-        /// Is triggered when the show changes button is clicked
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event data</param>
-        private void showChangesToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            //create a new changes form
-            if (formChanges == null || formChanges.IsDisposed)
-            {
-                formChanges = new FormChanges(ToDoList);
-            }
-            
-            //show the form
-            formChanges.Show();
-
-            formChanges.TopMost = true;
-            formChanges.TopMost = false;
-        }
-
-        /// <summary>
         /// Is triggered when the edit button is clicked
         /// </summary>
         /// <param name="sender">The sender of the event</param>
@@ -191,6 +176,10 @@ namespace ToDo
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int index = olvTasks.SelectedIndex;
+            if (index >= ToDoList.Tasks.Count || index < 0)
+            {
+                return;
+            }
             Task t = ToDoList.Tasks[index]; 
             FormTask ft = new FormTask("Edit a task", t);
             if(ft.ShowDialog() == DialogResult.OK)
@@ -223,6 +212,26 @@ namespace ToDo
                 todoList = value;
             }
         }
+
+        private void SetSettings()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(SetSettings));
+                return;
+            }
+            bool val = false;
+            try
+            {
+                this.TopMost = Settings.GetSetting<bool>("TopMost");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
 
         /// <summary>
         /// Adds a new recent file to the recent files list
@@ -303,6 +312,8 @@ namespace ToDo
                     MessageBox.Show(ex.Message);
                 }
             }
+            Settings = settings;
+            SetSettings();
         }
 
         /// <summary>
@@ -410,6 +421,40 @@ namespace ToDo
             {
                 deleteToolStripMenuItem.PerformClick();
             }
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.TopMost = false;
+            FormSettings settings = new FormSettings();
+            settings.ShowDialog();
+            SetSettings();
+        }
+
+        private void archiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToDoList.ArchiveTask(olvTasks.SelectedIndex);
+        }
+
+        private void showChangesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //create a new changes form
+            if (formChanges == null || formChanges.IsDisposed)
+            {
+                formChanges = new FormChanges(ToDoList);
+            }
+
+            //show the form
+            formChanges.Show();
+
+            formChanges.TopMost = true;
+            formChanges.TopMost = false;
+        }
+
+        private void archiveToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FormArchive fa = new FormArchive();
+            fa.ShowDialog();
         }
     }
 }
