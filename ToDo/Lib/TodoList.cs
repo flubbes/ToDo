@@ -9,14 +9,20 @@ using System.Xml;
 namespace ToDo.Lib
 {
     [Serializable]
-    public class TodoList
+    public class ToDoList
     {
         public delegate void ListChangedEventHandler(object sender, EventArgs e);
+<<<<<<< HEAD
+=======
 
-        public TodoList()
+        public event ListChangedEventHandler ListChanged;
+>>>>>>> origin/0.4-alpha
+
+        public ToDoList()
         {
-            Categories = new List<Category>();
             Changes = new List<Change>();
+            Tasks = new List<Task>();
+            ArchivedTasks = new List<Task>();
         }
 
         public List<Category> Categories { get; set; }
@@ -33,6 +39,77 @@ namespace ToDo.Lib
         {
             Changes.Add(c);
             LocalVersion++;
+        }
+
+        public void ModifyTaskByIndex(int index, Task t)
+        {
+            Task old = (Task)Tasks[index].Clone();
+            Tasks[index] = t;
+            AddChange(new Change(Environment.UserName, ChangeType.Edit, old, t.Clone()));
+        }
+
+        public void ArchiveTask(int index)
+        {
+            if (ArchivedTasks == null)
+            {
+                ArchivedTasks = new List<Task>();
+            }
+            if (index >= Tasks.Count || index < 0)
+            {
+                return;
+            }
+            Task old = (Task)Tasks[index].Clone();
+            Task t = (Task)old.Clone();
+            t.ArchivedAt = DateTime.Now;
+            ArchivedTasks.Add(t);
+            Tasks.RemoveAt(index);
+            AddChange(new Change(Environment.UserName, ChangeType.Archived, old, t));
+        }
+
+        public List<Task> ArchivedTasks
+        {
+            get;
+            private set;
+        }
+
+        public void RemoveAtIndex(int index)
+        {
+            if (index >= Tasks.Count || index < 0)
+            {
+                return;
+            }
+            Task old = (Task)Tasks[index].Clone();
+            Tasks.RemoveAt(index);
+            AddChange(new Change(Environment.UserName, ChangeType.Delete, old, null));
+        }
+
+        public string[] ParseCategories()
+        {
+            List<string> result = new List<string>();
+            foreach (Task t in Tasks)
+            {
+                if (!result.Contains(t.Category) && !string.IsNullOrEmpty(t.Category))
+                {
+                    result.Add(t.Category);
+                }
+            }
+            return result.ToArray();
+        }
+
+        public void AddTask(Task t)
+        {
+            if (Tasks == null)
+            {
+                Tasks = new List<Task>();
+            }
+            Tasks.Add(t);
+            AddChange(new Change(Environment.UserName, ChangeType.Add, null, t.Clone()));
+        }
+
+        public List<Task> Tasks
+        {
+            get;
+            private set;
         }
 
         public void AddChange(Change c)
@@ -56,22 +133,46 @@ namespace ToDo.Lib
             }
         }
 
+<<<<<<< HEAD
         public static TodoList DeserializeFromBinary(string path)
+=======
+        public List<Change> Changes
+        {
+            get;
+            set;
+        }
+
+        public static ToDoList Deserialize(string path)
+>>>>>>> origin/0.4-alpha
         {
             if (File.Exists(path))
             {
                 using (Stream str = new FileStream(path, FileMode.Open))
                 {
+<<<<<<< HEAD
                     var bf = new BinaryFormatter();
                     object theDictionary = bf.Deserialize(str);
                     var tl = (TodoList)theDictionary;
                     return tl;
                 }
+=======
+                    BinaryFormatter bf = new BinaryFormatter();
+                    bf.AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
+                    var theDictionary = bf.Deserialize(str);
+                    ToDoList tl = (ToDoList)theDictionary;
+                    str.Close();
+                    return tl;
+                }
+            }
+            else
+            {
+                throw new FileNotFoundException("This todo list does not exist");
+>>>>>>> origin/0.4-alpha
             }
             throw new FileNotFoundException("This todo list does not exist");
         }
 
-        public static void SerializeToBinary(ref TodoList theList, string path)
+        public static void Serialize(ToDoList theList, string path)
         {
             using (Stream str = new FileStream(path, FileMode.Create))
             {
@@ -88,6 +189,7 @@ namespace ToDo.Lib
             }
         }
 
+<<<<<<< HEAD
         public void AddCategory(Category cat)
         {
             Changes.Add(new Change(Environment.UserName, ChangeType.Add, null, cat.Clone()));
@@ -223,5 +325,18 @@ namespace ToDo.Lib
             xtw.Flush();
             xtw.Close();
         }
+=======
+        public long LocalVersion
+        {
+            get;
+            private set;
+        }
+
+        public long OnlineVersion
+        {
+            get;
+            private set;
+        }
+>>>>>>> origin/0.4-alpha
     }
 }

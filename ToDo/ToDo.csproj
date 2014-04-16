@@ -53,6 +53,12 @@
     <ApplicationIcon>ToDoLogo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="KaBeLib">
+      <HintPath>.\KaBeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ObjectListView">
+      <HintPath>.\ObjectListView.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -65,17 +71,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormAddCategory.cs">
+    <Compile Include="FormAbout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormAddCategory.Designer.cs">
-      <DependentUpon>FormAddCategory.cs</DependentUpon>
+    <Compile Include="FormAbout.Designer.cs">
+      <DependentUpon>FormAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormAddTask.cs">
+    <Compile Include="FormSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormAddTask.Designer.cs">
-      <DependentUpon>FormAddTask.cs</DependentUpon>
+    <Compile Include="FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTask.Designer.cs">
+      <DependentUpon>FormTask.cs</DependentUpon>
     </Compile>
     <Compile Include="FormAsyncProgressBar.cs">
       <SubType>Form</SubType>
@@ -107,30 +119,37 @@
     <Compile Include="FormSplashScreen.Designer.cs">
       <DependentUpon>FormSplashScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormTasks.cs">
+    <Compile Include="FormArchive.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormTasks.Designer.cs">
-      <DependentUpon>FormTasks.cs</DependentUpon>
+    <Compile Include="FormArchive.Designer.cs">
+      <DependentUpon>FormArchive.cs</DependentUpon>
     </Compile>
     <Compile Include="Lib\ApplicationManager.cs" />
-    <Compile Include="Lib\Category.cs" />
+    <Compile Include="Lib\DbVersionManager.cs" />
+    <Compile Include="Lib\FormatPre04\Category.cs" />
     <Compile Include="Lib\Change.cs" />
     <Compile Include="Lib\ChangeType.cs" />
-    <Compile Include="Lib\TodoListChangedEventArgs.cs" />
-    <Compile Include="Lib\TodoList.cs" />
+    <Compile Include="Lib\FormatPre04\TodoListChangedEventArgs.cs" />
+    <Compile Include="Lib\FormatPre04\TodoList.cs" />
     <Compile Include="Lib\DbManager.cs" />
-    <Compile Include="Lib\FtpManager.cs" />
+    <Compile Include="Lib\Ftp\FtpManager.cs" />
     <Compile Include="Lib\Settings.cs" />
+    <Compile Include="Lib\FormatPre04\Task.cs" />
     <Compile Include="Lib\Task.cs" />
+    <Compile Include="Lib\ToDoList.cs" />
+    <Compile Include="Lib\ToDoListVersion.cs" />
     <Compile Include="Lib\Updater.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormAddCategory.resx">
-      <DependentUpon>FormAddCategory.cs</DependentUpon>
+    <EmbeddedResource Include="FormAbout.resx">
+      <DependentUpon>FormAbout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAddTask.resx">
-      <DependentUpon>FormAddTask.cs</DependentUpon>
+    <EmbeddedResource Include="FormSettings.resx">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTask.resx">
+      <DependentUpon>FormTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAsyncProgressBar.resx">
       <DependentUpon>FormAsyncProgressBar.cs</DependentUpon>
@@ -147,8 +166,8 @@
     <EmbeddedResource Include="FormSplashScreen.resx">
       <DependentUpon>FormSplashScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormTasks.resx">
-      <DependentUpon>FormTasks.cs</DependentUpon>
+    <EmbeddedResource Include="FormArchive.resx">
+      <DependentUpon>FormArchive.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -173,7 +192,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ToDoLogo.ico" />
+    <EmbeddedResource Include="Changelog.txt" />
+    <EmbeddedResource Include="ToDoLogo.ico" />
     <EmbeddedResource Include="ToDoUpdater.exe" />
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +212,14 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="KaBeLib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ObjectListView.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

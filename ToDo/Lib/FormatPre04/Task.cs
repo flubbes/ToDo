@@ -1,27 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ToDo.Lib
+namespace ToDo.Lib.FormatPre04
 {
     [Serializable]
     public class Task : ICloneable
     {
-        private bool _isDone;
+        [OptionalField]
+        private bool isDone;
 
-        public string Text { get; set; }
-
-        public DateTime DueDate
-        {
-            get;
-            set;
-        }
-
-        public string EstimatedTime
-        {
-            get;
-            set;
-        }
-
-        public DateTime ArchivedAt
+        public string Text
         {
             get;
             set;
@@ -49,13 +41,6 @@ namespace ToDo.Lib
 
         public bool IsDone
         {
-<<<<<<< HEAD
-            get { return _isDone; }
-            set
-            {
-                DoneAt = value ? DateTime.Now : new DateTime();
-                _isDone = value;
-=======
             get
             {
                 return isDone;
@@ -63,19 +48,10 @@ namespace ToDo.Lib
             protected set
             {
                 isDone = value;
->>>>>>> origin/0.4-alpha
             }
         }
 
-        public DateTime DoneAt { get; set; }
-
-        public string Category
-        {
-            get;
-            set;
-        }
-
-        public int Priority
+        public DateTime DoneAt
         {
             get;
             set;
@@ -83,19 +59,10 @@ namespace ToDo.Lib
 
         public object Clone()
         {
-<<<<<<< HEAD
-            var t = new Task { DoneAt = DoneAt, IsDone = _isDone, Text = Text };
-=======
             Task t = new Task();
             t.DoneAt = this.DoneAt;
             t.IsDone = this.isDone;
             t.Text = this.Text;
-            t.DueDate = this.DueDate;
-            t.EstimatedTime = this.EstimatedTime;
-            t.Priority = this.Priority;
-            t.Category = this.Category;
-            t.ArchivedAt = this.ArchivedAt;
->>>>>>> origin/0.4-alpha
             return t;
         }
     }

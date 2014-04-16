@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -11,6 +12,7 @@ namespace ToDo
     public partial class FormMain : Form
     {
         #region private fields and constants
+<<<<<<< HEAD
 
         private const string SettingsPath = "settings.dat";
         private const string RecentFilesKeyWord = "RecentFiles";
@@ -24,6 +26,20 @@ namespace ToDo
         private TodoList _todoList;
 
         #endregion private fields and constants
+=======
+        private string defaultDB;
+        private string loadedDB;
+        private DbManager dbm;
+        private Settings settings;
+        private string settingsPath;
+        private List<string> recentFiles;
+        private const string recentFilesKeyWord = "RecentFiles";
+        private FormChanges formChanges;
+        private static ToDoList todoList;
+        
+
+        #endregion
+>>>>>>> origin/0.4-alpha
 
         /// <summary>
         ///     Initialize the main form
@@ -31,23 +47,221 @@ namespace ToDo
         public FormMain()
         {
             InitializeComponent();
+            this.Icon = ApplicationManager.GetAppIcon();
+            InitObjectListView();
             ApplicationManager.Initialize();
+        }
+
+        public void InitObjectListView()
+        {
+            olvcPriority.GroupKeyGetter = PriorityGroupKeyGetter;
+            olvcText.GroupKeyGetter = CategoryGroupKeyGetter;
+            olvcDueDate.GroupKeyGetter = DueDateGroupKeyGetter;
+            olvcEstimatedTime.GroupKeyGetter = EstimatedGroupKeyGetter;
+
+            olvcText.FillsFreeSpace = true;
+        }
+
+        public static Settings Settings
+        {
+            get;
+            set;
+        }
+
+        private object EstimatedGroupKeyGetter(object rowObject)
+        {
+            Task t = ((Task)rowObject);
+            return t.EstimatedTime;
+        }
+
+        private object DueDateGroupKeyGetter(object rowObject)
+        {
+            Task t = ((Task)rowObject);
+            return t.DueDate;
+        }
+
+        private object PriorityGroupKeyGetter(object rowObject)
+        {
+            Task t = ((Task)rowObject);
+            return t.Priority;
+        }
+
+        private string CategoryGroupKeyGetter(object rowObject)
+        {
+            Task t = ((Task)rowObject);
+            if (string.IsNullOrEmpty(t.Category))
+            {
+                return "No Category";
+            }
+            return t.Category;
         }
 
         public void InitializeTodo()
         {
+<<<<<<< HEAD
             _dbm = new DbManager();
+=======
+            settingsPath =  ApplicationManager.GetAppPath() + "settings.dat";
+            defaultDB = ApplicationManager.GetAppPath() +  "db.todo";
+            dbm = new DbManager();
+>>>>>>> origin/0.4-alpha
             LoadSettings();
             LoadDatabase(DefaultDb);
             LoadRecentFiles();
             UpdateRecentFilesControl();
             UpdateList();
+<<<<<<< HEAD
             _taskForm = new FormTasks(ref _todoList);
             _todoList.ListChanged += todoList_ListChanged;
+=======
+            ToDoList.ListChanged += todoList_ListChanged;
+>>>>>>> origin/0.4-alpha
         }
 
         /// <summary>
+<<<<<<< HEAD
         ///     Adds a new recent file to the recent files list
+=======
+        /// Is triggered when the todo list changes
+        /// </summary>
+        /// <param name="sender">The sender of this event</param>
+        /// <param name="e">The EventArgs with the event data</param>
+        void todoList_ListChanged(object sender, EventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(UpdateList));
+            }
+            else
+            {
+                UpdateList();
+            }
+            
+        }
+
+
+        /// <summary>
+        /// Is triggered when an item got doubleclicked
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event data</param>
+        private void lvCategories_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            editToolStripMenuItem.PerformClick();
+        }
+
+        /// <summary>
+        /// Is triggered when the form is closed
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event data</param>
+        private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            SaveSettings();
+            SaveDB();
+        }
+
+        /// <summary>
+        /// triggered when the load todolist button is clicked
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event data</param>
+        private void loadTodoListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            //set the filter to only .todo files
+            ofd.Filter = "Todo-Lists|*.todo|Old Xml TodoList|*.xml";
+
+            //set the initial directory to the path where the executeable is
+            ofd.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath);
+            ofd.Multiselect = false;
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    ToDoList = DbVersionManager.ReadToDoList(ofd.FileName);
+
+                    loadedDB = Path.GetFullPath(ofd.FileName);
+                    AddRecentFile(loadedDB);
+                    
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("This database is corrupted!");
+                }
+                UpdateList();
+            }
+        }
+
+        /// <summary>
+        /// Is triggered when the edit button is clicked
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event data</param>
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int index = olvTasks.SelectedIndex;
+            if (index >= ToDoList.Tasks.Count || index < 0)
+            {
+                return;
+            }
+            Task t = ToDoList.Tasks[index]; 
+            FormTask ft = new FormTask("Edit a task", t);
+            if(ft.ShowDialog() == DialogResult.OK)
+            {
+                ToDoList.ModifyTaskByIndex(index, t);
+            }
+        }
+
+
+        /// <summary>
+        /// Triggered when a recent file drop down item is clicked
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event data</param>
+        void tsddi_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem item = (ToolStripDropDownItem)sender;
+            LoadDatabase(item.Text);
+        }
+        #endregion
+
+        public static ToDoList ToDoList
+        {
+            get
+            {
+                return todoList;
+            }
+            private set
+            {
+                todoList = value;
+            }
+        }
+
+        private void SetSettings()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(SetSettings));
+                return;
+            }
+            bool val = false;
+            try
+            {
+                this.TopMost = Settings.GetSetting<bool>("TopMost");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
+
+
+        /// <summary>
+        /// Adds a new recent file to the recent files list
+>>>>>>> origin/0.4-alpha
         /// </summary>
         /// <param name="path">The path to the recent used file</param>
         private void AddRecentFile(string path)
@@ -69,10 +283,16 @@ namespace ToDo
         /// </summary>
         private void UpdateRecentFilesControl()
         {
+<<<<<<< HEAD
             if (_recentFiles == null)
+=======
+            if(recentFiles == null || recentFiles.Count <= 0)
+>>>>>>> origin/0.4-alpha
             {
+                recentFilesToolStripMenuItem.Visible = false;
                 return;
             }
+            recentFilesToolStripMenuItem.Visible = true;
             recentFilesToolStripMenuItem.DropDownItems.Clear();
             foreach (string path in _recentFiles)
             {
@@ -90,13 +310,23 @@ namespace ToDo
         /// <param name="path">The from where you want to load the database</param>
         private void LoadDatabase(string path)
         {
+<<<<<<< HEAD
             _loadedDb = path;
             _todoList = new TodoList();
+=======
+            loadedDB = path;
+            ToDoList = new ToDoList();
+>>>>>>> origin/0.4-alpha
             if (File.Exists(path))
             {
+                
                 try
                 {
+<<<<<<< HEAD
                     _todoList = TodoList.DeserializeFromBinary(DefaultDb);
+=======
+                    ToDoList = DbVersionManager.ReadToDoList(path);
+>>>>>>> origin/0.4-alpha
                 }
                 catch
                 {
@@ -122,6 +352,8 @@ namespace ToDo
                     MessageBox.Show(ex.Message);
                 }
             }
+            Settings = settings;
+            SetSettings();
         }
 
         /// <summary>
@@ -141,6 +373,7 @@ namespace ToDo
         /// </summary>
         private void UpdateList()
         {
+<<<<<<< HEAD
             lvCategories.Items.Clear();
             foreach (Category c in _todoList.Categories)
             {
@@ -167,7 +400,15 @@ namespace ToDo
             {
                 lvCategories.Items.Add(i);
             }
+=======
+            olvTasks.SetObjects(ToDoList.Tasks);
         }
+
+        private void ResizeColumns()
+        {
+>>>>>>> origin/0.4-alpha
+        }
+
 
         /// <summary>
         ///     Stores the currently loaded db in a binary file
@@ -180,7 +421,11 @@ namespace ToDo
 
         private void SaveDbAsync(BackgroundWorker worker)
         {
+<<<<<<< HEAD
             TodoList.SerializeToBinary(ref _todoList, _loadedDb);
+=======
+            ToDoList.Serialize(ToDoList, loadedDB);
+>>>>>>> origin/0.4-alpha
         }
 
         /// <summary>
@@ -192,6 +437,7 @@ namespace ToDo
             _settings.Serialize(SettingsPath);
         }
 
+<<<<<<< HEAD
         /// <summary>
         ///     Deletes the current selection
         /// </summary>
@@ -210,13 +456,15 @@ namespace ToDo
             }
         }
 
+=======
+>>>>>>> origin/0.4-alpha
         private void FormMain_Load(object sender, EventArgs e)
         {
             var fss = new FormSplashScreen(this);
             fss.ShowDialog();
         }
 
-        private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -240,6 +488,7 @@ namespace ToDo
             }
         }
 
+<<<<<<< HEAD
         #region events
 
         /// <summary>
@@ -435,5 +684,71 @@ namespace ToDo
         }
 
         #endregion events
+=======
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FormAbout().ShowDialog();
+        }
+
+        private void addTaskToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormTask fat = new FormTask("Add a new Task");
+            if(fat.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                ToDoList.AddTask(fat.Result);
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToDoList.RemoveAtIndex(olvTasks.SelectedIndex);
+        }
+
+        private void olvTasks_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                addTaskToolStripMenuItem.PerformClick();
+            }
+            if(e.KeyCode == Keys.Delete)
+            {
+                deleteToolStripMenuItem.PerformClick();
+            }
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.TopMost = false;
+            FormSettings settings = new FormSettings();
+            settings.ShowDialog();
+            SetSettings();
+        }
+
+        private void archiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToDoList.ArchiveTask(olvTasks.SelectedIndex);
+        }
+
+        private void showChangesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //create a new changes form
+            if (formChanges == null || formChanges.IsDisposed)
+            {
+                formChanges = new FormChanges(ToDoList);
+            }
+
+            //show the form
+            formChanges.Show();
+
+            formChanges.TopMost = true;
+            formChanges.TopMost = false;
+        }
+
+        private void archiveToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FormArchive fa = new FormArchive();
+            fa.ShowDialog();
+        }
+>>>>>>> origin/0.4-alpha
     }
 }

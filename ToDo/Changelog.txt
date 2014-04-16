@@ -1,0 +1,20 @@
+﻿Version 0.3 Alpha
+FIXED category with no tasks: zero percent bug
+FIXED the weird batch add order bug
+ADDED there is now a progress bar while batch adding tasks
+CHANGE performance upgrades for working with unneccessary huge amounts of tasks
+FIXED changes form didn't show with < 100 entries
+FIXED progress bar form didn't refresh bug
+FIXED hang up bug in taskform with a lot of tasks
+FIXED the tab indexes in batch add form
+ADDED splashscreen and closing screen
+ADDED auto update functionality
+FIXED some bugfixes in the autoupdater
+
+Version 0.2 Alpha
+FIX fixed a bug where the changes form did not show the change
+CHANGE reversed the changes form list for a better overview
+ADD the changes form now changes everytime  something changes
+
+Version 0.1 Alpha
+- release
