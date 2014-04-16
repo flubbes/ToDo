@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ToDo.Lib;
 
@@ -18,11 +11,7 @@ namespace ToDo
             InitializeComponent();
         }
 
-        public Category NewCat
-        {
-            get;
-            private set;
-        }
+        public Category NewCat { get; private set; }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -32,7 +21,7 @@ namespace ToDo
                 return;
             }
             NewCat = new Category(tbName.Text);
-            this.Close();
+            Close();
         }
 
         private void tbName_KeyDown(object sender, KeyEventArgs e)

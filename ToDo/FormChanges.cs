@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using ToDo.Lib;
 
@@ -12,20 +7,21 @@ namespace ToDo
 {
     public partial class FormChanges : Form
     {
-        TodoList todoList;
+        private readonly TodoList _todoList;
+
         public FormChanges(TodoList tl)
         {
             InitializeComponent();
-            this.todoList = tl;
+            _todoList = tl;
             UpdateListView();
             tl.ListChanged += tl_ListChanged;
         }
 
-        void tl_ListChanged(object sender, EventArgs e)
+        private void tl_ListChanged(object sender, EventArgs e)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.Invoke(new MethodInvoker(UpdateListView));
+                Invoke(new MethodInvoker(UpdateListView));
             }
             else
             {
@@ -46,29 +42,21 @@ namespace ToDo
         public void UpdateListView()
         {
             lvChanges.Items.Clear();
-            List<Change> tempChanges;
-            if (todoList.Changes.Count <= 100)
-            {
-                tempChanges = todoList.Changes;
-            }
-            else
-            {
-                tempChanges = todoList.Changes.GetRange(todoList.Changes.Count - 101, 100);
-            }
+            List<Change> tempChanges = _todoList.Changes.Count <= 100 ? _todoList.Changes : _todoList.Changes.GetRange(_todoList.Changes.Count - 101, 100);
             tempChanges.Reverse();
             foreach (Change c in tempChanges)
             {
-                ListViewItem item = new ListViewItem(c.Type.ToString());
+                var item = new ListViewItem(c.Type.ToString());
                 item.SubItems.Add(c.Author);
                 object before = c.Before;
-                if(before != null && before.GetType() == typeof(Task))
+                if (before != null && before.GetType() == typeof(Task))
                 {
-                    Task t = (Task)before;
+                    var t = (Task)before;
                     item.SubItems.Add(ColumnStringFromTask(t));
                 }
-                else if(before != null && before.GetType() == typeof(Category))
+                else if (before != null && before.GetType() == typeof(Category))
                 {
-                    Category t = (Category)before;
+                    var t = (Category)before;
                     item.SubItems.Add(ColumnStringFromCategory(t));
                 }
                 else
@@ -79,12 +67,12 @@ namespace ToDo
                 object after = c.After;
                 if (after != null && after.GetType() == typeof(Task))
                 {
-                    Task t = (Task)after;
+                    var t = (Task)after;
                     item.SubItems.Add(ColumnStringFromTask(t));
                 }
                 else if (after != null && after.GetType() == typeof(Category))
                 {
-                    Category t = (Category)after;
+                    var t = (Category)after;
                     item.SubItems.Add(ColumnStringFromCategory(t));
                 }
                 else
@@ -97,7 +85,7 @@ namespace ToDo
 
         private void lvChanges_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.F5)
+            if (e.KeyCode == Keys.F5)
             {
                 UpdateListView();
             }

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using ToDo.Lib;
 
@@ -12,50 +8,53 @@ namespace ToDo
 {
     public partial class FormTasks : Form
     {
-        Category curCat;
-        TodoList todoList;
-        List<Task> batchAddTaskList;
+        private readonly TodoList _todoList;
+        private List<Task> _batchAddTaskList;
+        private Category _curCat;
 
         public FormTasks(ref TodoList todoList)
         {
             InitializeComponent();
-            this.todoList = todoList;
+            _todoList = todoList;
         }
+
+        public bool IsClosed { get; private set; }
 
         public void UpdateTasks()
         {
-            if (curCat == null)
+            if (_curCat == null)
             {
                 return;
             }
-            UpdateTasks(curCat);
+            UpdateTasks(_curCat);
         }
 
         public void UpdateTasks(Category c)
         {
-            curCat = c;
-            FormAsyncProgressBar fap = new FormAsyncProgressBar(new Action<BackgroundWorker>(RefreshListView), "Refreshing form");
+            _curCat = c;
+            var fap = new FormAsyncProgressBar(RefreshListView, "Refreshing form");
             fap.ShowDialog();
         }
 
         private void RefreshListView(BackgroundWorker worker)
         {
-            this.Text = "Tasks : " + curCat.Name;
-            if (this.InvokeRequired)
+            Text = "Tasks : " + _curCat.Name;
+            if (InvokeRequired)
             {
-                this.Invoke(new MethodInvoker(clbTasks.Items.Clear));
+                Invoke(new MethodInvoker(clbTasks.Items.Clear));
             }
             else
             {
                 clbTasks.Items.Clear();
             }
             int counter = 0;
-            int g = curCat.Tasks.Count;
-            foreach (Task t in curCat.Tasks)
+            int g = _curCat.Tasks.Count;
+            foreach (Task t in _curCat.Tasks)
             {
-                if (this.InvokeRequired)
+                if (InvokeRequired)
                 {
-                    this.Invoke(new MethodInvoker(() => clbTasks.Items.Add(t.Text, t.IsDone)));
+                    Task t1 = t;
+                    Invoke(new MethodInvoker(() => clbTasks.Items.Add(t1.Text, t1.IsDone)));
                 }
                 else
                 {
@@ -64,12 +63,6 @@ namespace ToDo
                 counter++;
                 worker.ReportProgress(counter * 100 / g);
             }
-        }
-
-        public bool IsClosed
-        {
-            get;
-            private set;
         }
 
         private void FormTasks_FormClosed(object sender, FormClosedEventArgs e)
@@ -81,10 +74,11 @@ namespace ToDo
         {
             if (clbTasks.SelectedIndex != -1)
             {
-                Change c = new Change(Environment.UserName, ChangeType.Delete, curCat.Tasks[clbTasks.SelectedIndex].Clone(), null);
-                curCat.Tasks.RemoveAt(clbTasks.SelectedIndex);
+                var c = new Change(Environment.UserName, ChangeType.Delete, _curCat.Tasks[clbTasks.SelectedIndex].Clone(),
+                    null);
+                _curCat.Tasks.RemoveAt(clbTasks.SelectedIndex);
                 UpdateTasks();
-                todoList.AddChange(c);
+                _todoList.AddChange(c);
             }
         }
 
@@ -102,52 +96,50 @@ namespace ToDo
 
         private void clbTasks_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Task old = (Task)curCat.Tasks[e.Index].Clone();
-            curCat.Tasks[e.Index].IsDone = e.NewValue.Equals(CheckState.Checked);
-            Change c = new Change(Environment.UserName, ChangeType.Edit, old, curCat.Tasks[e.Index].Clone());
-            todoList.AddChange(c);
+            var old = (Task)_curCat.Tasks[e.Index].Clone();
+            _curCat.Tasks[e.Index].IsDone = e.NewValue.Equals(CheckState.Checked);
+            var c = new Change(Environment.UserName, ChangeType.Edit, old, _curCat.Tasks[e.Index].Clone());
+            _todoList.AddChange(c);
         }
 
         private void addTaskToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormAddTask f = new FormAddTask();
+            var f = new FormAddTask();
             f.ShowDialog();
             if (f.NewTask != null)
             {
-                Change c = new Change(Environment.UserName, ChangeType.Add, null, f.NewTask.Clone());
-                curCat.AddTask(f.NewTask);
+                var c = new Change(Environment.UserName, ChangeType.Add, null, f.NewTask.Clone());
+                _curCat.AddTask(f.NewTask);
                 UpdateTasks();
-                todoList.AddChange(c);
+                _todoList.AddChange(c);
             }
         }
 
         private void AddTheTasks(BackgroundWorker worker)
         {
-            int w = 0;
-            int g = batchAddTaskList.Count;
-            int p = 0;
-            for (int i = 0; i < batchAddTaskList.Count; i++)
+            int g = _batchAddTaskList.Count;
+            for (int i = 0; i < _batchAddTaskList.Count; i++)
             {
-                Task t = batchAddTaskList[i];
-                Change c = new Change(Environment.UserName, ChangeType.Add, null, t.Clone());
-                curCat.AddTask(t);
-                todoList.AddChangeWithoutEventTriggering(c);
+                Task t = _batchAddTaskList[i];
+                var c = new Change(Environment.UserName, ChangeType.Add, null, t.Clone());
+                _curCat.AddTask(t);
+                _todoList.AddChangeWithoutEventTriggering(c);
 
-                w = i + 1;
-                p = w * 100 / g;
+                int w = i + 1;
+                int p = w * 100 / g;
                 worker.ReportProgress(p);
             }
-            todoList.TriggerChangeEvent();
+            _todoList.TriggerChangeEvent();
         }
 
         private void batchAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormBatchAdd f = new FormBatchAdd();
+            var f = new FormBatchAdd();
             f.ShowDialog();
             if (f.NewTasks != null)
             {
-                batchAddTaskList = f.NewTasks;
-                FormAsyncProgressBar fap = new FormAsyncProgressBar(new Action<BackgroundWorker>(AddTheTasks), "Adding the tasks");
+                _batchAddTaskList = f.NewTasks;
+                var fap = new FormAsyncProgressBar(AddTheTasks, "Adding the tasks");
                 fap.ShowDialog();
                 UpdateTasks();
             }

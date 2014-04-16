@@ -1,59 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ToDo.Lib
 {
     public class Updater
     {
-        DateTime lastCheck;
+        private readonly DateTime _lastCheck;
 
         public Updater()
         {
             TryDeleteUpdater();
-            lastCheck = DateTime.Now.Subtract(TimeSpan.FromDays(1));
-        }
-
-        private void TryDeleteUpdater()
-        {
-            try
-            {
-                if (File.Exists("TodoUpdater.exe"))
-                {
-                    File.Delete("TodoUpdater.exe");
-                }
-            }
-            catch { }
+            _lastCheck = DateTime.Now.Subtract(TimeSpan.FromDays(1));
         }
 
         /// <summary>
-        /// The local version
+        ///     The local version
         /// </summary>
         internal long LocalVersion
         {
-            get
-            {
-                return 3;
-            }
+            get { return 6; }
         }
 
-        public long OnlineVersion
+        public long OnlineVersion { get; private set; }
+
+        private static void TryDeleteUpdater()
         {
-            get;
-            private set;
+            if (File.Exists("TodoUpdater.exe"))
+            {
+                File.Delete("TodoUpdater.exe");
+            }
         }
 
         private void RefreshOnlineVersion()
         {
             try
             {
-                OnlineVersion = Convert.ToInt64(new WebClient().DownloadString("http://todo-update.kabesoft.de/version.php"));
+                OnlineVersion =
+                    Convert.ToInt64(new WebClient().DownloadString("http://todo-update.kabesoft.de/version.php"));
             }
             catch
             {
@@ -63,39 +50,36 @@ namespace ToDo.Lib
 
         public void DownloadUpdate()
         {
-            WebClient cl = new WebClient();
+            var cl = new WebClient();
             cl.DownloadFileCompleted += cl_DownloadFileCompleted;
-            if(File.Exists("ToDo_new.exe"))
+            if (File.Exists("temp"))
             {
-                File.Delete("Todo_new.exe");
+                File.Delete("temp");
             }
-            cl.DownloadFileAsync(new Uri("http://todo-update.kabesoft.de/ToDo.exe"), "ToDo_new.exe");
+            cl.DownloadFileAsync(new Uri("http://todo-update.kabesoft.de/ToDo.exe"), "temp");
         }
 
-        void cl_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        private void cl_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            Stream stream = GetType().Assembly.GetManifestResourceStream("ToDo.ToDoUpdater.exe");
-            byte[] bytes = new byte[(int)stream.Length];
-            stream.Read(bytes, 0, bytes.Length);
-            File.WriteAllBytes("ToDoUpdater.exe", bytes);
-
-
-            Process.Start("ToDoUpdater.exe");
+            var stream = GetType().Assembly.GetManifestResourceStream("ToDo.ToDoUpdater.exe");
+            if (stream != null)
+            {
+                var bytes = new byte[(int)stream.Length];
+                stream.Read(bytes, 0, bytes.Length);
+                File.WriteAllBytes("ToDoUpdater.exe", bytes);
+            }
+            Process.Start("ToDoUpdater.exe", "ToDo.exe temp");
             Application.Exit();
         }
 
         public bool HasUpdate()
         {
-            if((DateTime.Now - lastCheck).TotalSeconds <= 30)
+            if ((DateTime.Now - _lastCheck).TotalSeconds <= 30)
             {
                 return false;
             }
             RefreshOnlineVersion();
-            if(LocalVersion < OnlineVersion)
-            {
-                return true;
-            }
-            return false;
+            return LocalVersion < OnlineVersion;
         }
     }
 }

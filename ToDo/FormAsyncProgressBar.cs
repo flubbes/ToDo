@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace ToDo
 {
     public partial class FormAsyncProgressBar : Form
     {
-        BackgroundWorker backgroundWorker;
-        Action<BackgroundWorker> toRun;
+        private BackgroundWorker _backgroundWorker;
+        private Action<BackgroundWorker> _toRun;
 
         public FormAsyncProgressBar(Action<BackgroundWorker> method, string taskName)
         {
@@ -31,14 +25,14 @@ namespace ToDo
         private void InitForm(Action<BackgroundWorker> method, string taskName, ProgressBarStyle style)
         {
             progressBar.Style = style;
-            this.Text = taskName;
-            toRun = method;
-            backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += backgroundWorker_DoWork;
-            backgroundWorker.ProgressChanged += backgroundWorker_ProgressChanged;
-            backgroundWorker.WorkerReportsProgress = true;
-            backgroundWorker.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
-            if(style != ProgressBarStyle.Blocks)
+            Text = taskName;
+            _toRun = method;
+            _backgroundWorker = new BackgroundWorker();
+            _backgroundWorker.DoWork += backgroundWorker_DoWork;
+            _backgroundWorker.ProgressChanged += backgroundWorker_ProgressChanged;
+            _backgroundWorker.WorkerReportsProgress = true;
+            _backgroundWorker.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
+            if (style != ProgressBarStyle.Blocks)
             {
                 lblProgress.Visible = false;
                 lblProgressDesc.Visible = false;
@@ -47,21 +41,21 @@ namespace ToDo
 
         public void StartTheTask()
         {
-            backgroundWorker.RunWorkerAsync();
+            _backgroundWorker.RunWorkerAsync();
         }
 
-        void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.Refresh();
+            Refresh();
             Application.DoEvents();
-            this.Close();
+            Close();
         }
 
-        void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.Invoke(new MethodInvoker(() => UpdateProgressBar(e.ProgressPercentage)));
+                Invoke(new MethodInvoker(() => UpdateProgressBar(e.ProgressPercentage)));
             }
             else
             {
@@ -69,14 +63,14 @@ namespace ToDo
             }
         }
 
-        void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            toRun.Invoke(backgroundWorker);
+            _toRun.Invoke(_backgroundWorker);
         }
 
         private void UpdateProgressBar(int val)
         {
-            lblProgress.Text = val.ToString() + " %";
+            lblProgress.Text = val.ToString(CultureInfo.InvariantCulture) + " %";
             progressBar.Value = val;
         }
 

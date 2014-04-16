@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ToDo.Lib
 {
@@ -12,54 +10,26 @@ namespace ToDo.Lib
         public Category(string name)
         {
             Tasks = new List<Task>();
-            this.Name = name;
+            Name = name;
         }
 
-        public long ID
-        {
-            get;
-            private set;
-        }
+        public long Id { get; private set; }
 
-        public List<Task> Tasks
-        {
-            get;
-            set;
-        }
+        public List<Task> Tasks { get; set; }
 
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; }
 
         public int TaskCount
         {
-            get
-            {
-                return Tasks.Count;
-            }
+            get { return Tasks.Count; }
         }
 
         public int TasksDone
         {
             get
             {
-                int result = 0;
-                foreach (Task t in Tasks)
-                {
-                    if (t.IsDone)
-                    {
-                        result++;
-                    }
-                }
-                return result;
+                return Tasks.Count(t => t.IsDone);
             }
-        }
-
-        public void AddTask(Task t)
-        {
-            Tasks.Add(t);
         }
 
         public double CategoryPercentage
@@ -67,13 +37,13 @@ namespace ToDo.Lib
             get
             {
                 //if there are no tasks then this category is complete
-                if(TaskCount <= 0)
+                if (TaskCount <= 0)
                 {
                     return 100;
                 }
                 try
                 {
-                    return TasksDone * 100 / TaskCount;
+                    return TasksDone * 100.0 / TaskCount;
                 }
                 catch
                 {
@@ -84,10 +54,13 @@ namespace ToDo.Lib
 
         public object Clone()
         {
-            Category c = new Category(this.Name);
-            c.Tasks = this.Tasks;
-            c.ID = this.ID;
+            var c = new Category(Name) { Tasks = Tasks, Id = Id };
             return c;
+        }
+
+        public void AddTask(Task t)
+        {
+            Tasks.Add(t);
         }
     }
 }

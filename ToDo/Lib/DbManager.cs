@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ToDo.Lib
 {
     public class DbManager
     {
-        List<TodoList> todoLists;
-
         public DbManager()
         {
-            todoLists = new List<TodoList>();
-
+            TodoLists = new List<TodoList>();
         }
+
+        public List<TodoList> TodoLists { get; set; }
     }
 }
