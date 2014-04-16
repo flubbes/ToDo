@@ -15,6 +15,7 @@ namespace ToDo.Lib
     public class ToDoList
     {
         public delegate void ListChangedEventHandler(object sender, EventArgs e);
+
         public event ListChangedEventHandler ListChanged;
 
         public ToDoList()
@@ -39,7 +40,7 @@ namespace ToDo.Lib
 
         public void ArchiveTask(int index)
         {
-            if(ArchivedTasks == null)
+            if (ArchivedTasks == null)
             {
                 ArchivedTasks = new List<Task>();
             }
@@ -52,7 +53,7 @@ namespace ToDo.Lib
             t.ArchivedAt = DateTime.Now;
             ArchivedTasks.Add(t);
             Tasks.RemoveAt(index);
-            AddChange(new Change(Environment.UserName, ChangeType.Archived,old, t));
+            AddChange(new Change(Environment.UserName, ChangeType.Archived, old, t));
         }
 
         public List<Task> ArchivedTasks
@@ -63,7 +64,7 @@ namespace ToDo.Lib
 
         public void RemoveAtIndex(int index)
         {
-            if(index >= Tasks.Count  || index < 0)
+            if (index >= Tasks.Count || index < 0)
             {
                 return;
             }
@@ -71,24 +72,23 @@ namespace ToDo.Lib
             Tasks.RemoveAt(index);
             AddChange(new Change(Environment.UserName, ChangeType.Delete, old, null));
         }
-        
 
         public string[] ParseCategories()
         {
             List<string> result = new List<string>();
-            foreach(Task t in Tasks)
+            foreach (Task t in Tasks)
             {
-               if(!result.Contains(t.Category) && !string.IsNullOrEmpty(t.Category))
-               {
-                   result.Add(t.Category);
-               }
+                if (!result.Contains(t.Category) && !string.IsNullOrEmpty(t.Category))
+                {
+                    result.Add(t.Category);
+                }
             }
             return result.ToArray();
         }
 
         public void AddTask(Task t)
         {
-            if(Tasks == null)
+            if (Tasks == null)
             {
                 Tasks = new List<Task>();
             }
@@ -101,6 +101,7 @@ namespace ToDo.Lib
             get;
             private set;
         }
+
         public void AddChange(Change c)
         {
             Changes.Add(c);
