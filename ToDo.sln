@@ -9,8 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoUpdater", "ToDoUpdaeter
 EndProject
 Global
 	GlobalSection(CodealikeProperties) = postSolution
-		SolutionGuid = 171447fd-9d75-48f7-ae1d-a611659a3b3e
-		SolutionGuid = 649e78c3-b6ae-4894-8d16-a316d3a8a758
+		SolutionGuid = 7560e221-d91d-42f3-ba49-4c0e5a36a8ef
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,5 +27,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 649e78c3-b6ae-4894-8d16-a316d3a8a758
 	EndGlobalSection
 EndGlobal

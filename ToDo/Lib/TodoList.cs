@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml;
+using ToDo.Lib.FormatPre04;
 
 namespace ToDo.Lib
 {
@@ -12,11 +13,6 @@ namespace ToDo.Lib
     public class ToDoList
     {
         public delegate void ListChangedEventHandler(object sender, EventArgs e);
-<<<<<<< HEAD
-=======
-
-        public event ListChangedEventHandler ListChanged;
->>>>>>> origin/0.4-alpha
 
         public ToDoList()
         {
@@ -26,12 +22,6 @@ namespace ToDo.Lib
         }
 
         public List<Category> Categories { get; set; }
-
-        public List<Change> Changes { get; set; }
-
-        public long LocalVersion { get; private set; }
-
-        public long OnlineVersion { get; private set; }
 
         public event ListChangedEventHandler ListChanged;
 
@@ -133,9 +123,6 @@ namespace ToDo.Lib
             }
         }
 
-<<<<<<< HEAD
-        public static TodoList DeserializeFromBinary(string path)
-=======
         public List<Change> Changes
         {
             get;
@@ -143,31 +130,15 @@ namespace ToDo.Lib
         }
 
         public static ToDoList Deserialize(string path)
->>>>>>> origin/0.4-alpha
         {
             if (File.Exists(path))
             {
                 using (Stream str = new FileStream(path, FileMode.Open))
                 {
-<<<<<<< HEAD
                     var bf = new BinaryFormatter();
                     object theDictionary = bf.Deserialize(str);
-                    var tl = (TodoList)theDictionary;
-                    return tl;
+                    return (ToDoList)theDictionary;
                 }
-=======
-                    BinaryFormatter bf = new BinaryFormatter();
-                    bf.AssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple;
-                    var theDictionary = bf.Deserialize(str);
-                    ToDoList tl = (ToDoList)theDictionary;
-                    str.Close();
-                    return tl;
-                }
-            }
-            else
-            {
-                throw new FileNotFoundException("This todo list does not exist");
->>>>>>> origin/0.4-alpha
             }
             throw new FileNotFoundException("This todo list does not exist");
         }
@@ -189,7 +160,6 @@ namespace ToDo.Lib
             }
         }
 
-<<<<<<< HEAD
         public void AddCategory(Category cat)
         {
             Changes.Add(new Change(Environment.UserName, ChangeType.Add, null, cat.Clone()));
@@ -212,131 +182,8 @@ namespace ToDo.Lib
             }
         }
 
-        public void FromXml(string url)
-        {
-            if (!File.Exists(url))
-            {
-                return;
-            }
-            var doc = new XmlDocument();
-            doc.Load(url);
-            Categories = new List<Category>();
-            foreach (XmlNode main in doc.ChildNodes)
-            {
-                if (main.Name == "ToDoDb")
-                {
-                    if (main.Attributes != null)
-                    {
-                        foreach (XmlAttribute verAttr in main.Attributes)
-                        {
-                            if (verAttr.Name == "Version")
-                            {
-                                LocalVersion = Convert.ToInt64(verAttr.InnerText);
-                            }
-                        }
-                        foreach (XmlNode dN in main.ChildNodes)
-                        {
-                            if (dN.Name == "Categories")
-                            {
-                                foreach (XmlNode cN in dN.ChildNodes)
-                                {
-                                    if (cN.Name == "Category")
-                                    {
-                                        var c = new Category("DUMMY");
-                                        if (cN.Attributes != null)
-                                        {
-                                            foreach (XmlAttribute cA in cN.Attributes)
-                                            {
-                                                if (cA.Name == "Name")
-                                                {
-                                                    c.Name = cA.InnerText;
-                                                }
-                                            }
-                                            foreach (XmlNode taskNode in cN.ChildNodes)
-                                            {
-                                                if (taskNode.Name == "Tasks")
-                                                {
-                                                    foreach (XmlNode tN in taskNode.ChildNodes)
-                                                    {
-                                                        if (tN.Name == "Task")
-                                                        {
-                                                            var t = new Task();
-                                                            if (tN.Attributes != null)
-                                                            {
-                                                                foreach (XmlAttribute tA in tN.Attributes)
-                                                                {
-                                                                    if (tA.Name == "Text")
-                                                                    {
-                                                                        t.Text = tA.InnerText;
-                                                                    }
-                                                                    else if (tA.Name == "IsDone")
-                                                                    {
-                                                                        t.IsDone = Convert.ToBoolean(tA.InnerText);
-                                                                    }
-                                                                    else if (tA.Name == "DoneAt")
-                                                                    {
-                                                                        t.DoneAt = Convert.ToDateTime(tA.InnerText);
-                                                                    }
-                                                                }
-                                                                c.Tasks.Add(t);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        Categories.Add(c);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        public int LocalVersion { get; private set; }
 
-        public void ToXml(string path)
-        {
-            var xtw = new XmlTextWriter(path, Encoding.UTF8) { Formatting = Formatting.Indented };
-            xtw.WriteStartDocument();
-            xtw.WriteStartElement("ToDoDb");
-            xtw.WriteAttributeString("Version", LocalVersion.ToString(CultureInfo.InvariantCulture));
-
-            xtw.WriteStartElement("Categories");
-            foreach (Category c in Categories)
-            {
-                xtw.WriteStartElement("Category");
-                xtw.WriteAttributeString("Name", c.Name);
-                xtw.WriteStartElement("Tasks");
-                foreach (Task t in c.Tasks)
-                {
-                    xtw.WriteStartElement("Task");
-                    xtw.WriteAttributeString("Text", t.Text);
-                    xtw.WriteAttributeString("IsDone", t.IsDone.ToString());
-                    xtw.WriteAttributeString("DoneAt", t.DoneAt.ToString(CultureInfo.InvariantCulture));
-                    xtw.WriteEndElement();
-                }
-                xtw.WriteEndElement();
-                xtw.WriteEndElement();
-            }
-            xtw.WriteEndElement();
-            xtw.WriteEndElement();
-            xtw.WriteEndDocument();
-            xtw.Flush();
-            xtw.Close();
-        }
-=======
-        public long LocalVersion
-        {
-            get;
-            private set;
-        }
-
-        public long OnlineVersion
-        {
-            get;
-            private set;
-        }
->>>>>>> origin/0.4-alpha
+        public long OnlineVersion { get; private set; }
     }
 }

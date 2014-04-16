@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-<<<<<<< HEAD:ToDo/Lib/Category.cs
-=======
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
->>>>>>> origin/0.4-alpha:ToDo/Lib/FormatPre04/Category.cs
 
 namespace ToDo.Lib.FormatPre04
 {
