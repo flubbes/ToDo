@@ -49,7 +49,7 @@
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(93, 13);
             this.lblVersion.TabIndex = 1;
-            this.lblVersion.Text = "Version: 0.3 Alpha";
+            this.lblVersion.Text = "Version: 0.4 Alpha";
             // 
             // label2
             // 
